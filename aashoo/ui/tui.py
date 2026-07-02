@@ -205,12 +205,16 @@ def print_separator():
 
 def print_command_help():
     console.print(Panel(
-        "[cyan]/help[/cyan]     — ye list dikhao\n"
-        "[cyan]/clear[/cyan]    — screen clear karo\n"
-        "[cyan]/history[/cyan]  — conversation history dikhao\n"
-        "[cyan]/undo[/cyan]     — last file change revert karo\n"
-        "[cyan]/tree[/cyan]     — file tree refresh karo\n"
-        "[cyan]/exit[/cyan]     — project se bahar jao\n",
+        "[cyan]/help[/cyan]       — ye list dikhao\n"
+        "[cyan]/clear[/cyan]      — screen clear karo\n"
+        "[cyan]/history[/cyan]    — conversation history dikhao\n"
+        "[cyan]/undo[/cyan]       — last file change revert karo\n"
+        "[cyan]/tree[/cyan]       — file tree refresh karo\n"
+        "[cyan]/bg[/cyan]         — background processes list karo\n"
+        "[cyan]/bg-stop N[/cyan]  — background process N ko stop karo\n"
+        "[cyan]/editor[/cyan]     — Monaco Web Editor launch karo\n"
+        "[cyan]/code[/cyan]       — Monaco Web Editor launch karo\n"
+        "[cyan]/exit[/cyan]       — project se bahar jao\n",
         title="[bold]Commands[/bold]",
         border_style="dim",
     ))

@@ -16,17 +16,63 @@ from aashoo.projects.manager import create_project, open_project, clone_github
 
 console = Console()
 
-LOGO = r"""
+def get_random_logo() -> str:
+    default_logo = r"""
    ___         _                    ___                    _   
   / _ \  __ _ | |_   ___  ___     / _ \  __ _  ___  _ _ | |_ 
  | (_) |/ _` ||   \ / _ \/ _ \   | (_) |/ _` |/ -_)| ' \|  _|
   \___/ \__,_||_||_|\___/\___/    \___/ \__, |\___||_||_|\__|
                                          |___/                 
 """
+    try:
+        from pathlib import Path
+        import random
+        
+        logo_path = Path(__file__).resolve().parent.parent / "logo.txt"
+        if not logo_path.exists():
+            return default_logo
+            
+        content = logo_path.read_text(encoding="utf-8", errors="replace")
+        raw_blocks = content.split("\n\n")
+        logos = []
+        for block in raw_blocks:
+            lines = [l for l in block.splitlines() if l.strip()]
+            if len(lines) >= 3:
+                logos.append(block.strip("\r\n"))
+                
+        if logos:
+            return random.choice(logos)
+    except Exception:
+        pass
+    return default_logo
+
+
+def rainbow_text(text: str) -> str:
+    """ASCII art text ko vertical rainbow gradient ke sath colorize karta hai."""
+    import colorsys
+    import random
+    start_hue = random.random()
+    lines = text.splitlines()
+    colored_lines = []
+    num_lines = len(lines)
+    for i, line in enumerate(lines):
+        if not line.strip():
+            colored_lines.append(line)
+            continue
+        hue = (start_hue + (i / max(1, num_lines) * 0.8)) % 1.0
+        r, g, b = colorsys.hsv_to_rgb(hue, 1.0, 1.0)
+        r_int = int(r * 255)
+        g_int = int(g * 255)
+        b_int = int(b * 255)
+        colored_lines.append(f"[rgb({r_int},{g_int},{b_int})]{line}[/]")
+    return "\n".join(colored_lines)
+
+
+ACTIVE_LOGO = get_random_logo()
 
 
 def print_logo():
-    console.print(f"[bold cyan]{LOGO}[/bold cyan]")
+    console.print(rainbow_text(ACTIVE_LOGO))
     console.print(
         "[dim]  Personal AI Coding Agent — v0.1.0  |  "
         "github.com/sdbabhishek/aashoo-agent[/dim]\n"
@@ -118,6 +164,7 @@ def start_agent_session(project: dict, config: dict):
     from aashoo.llm.groq import GroqLLM
     from aashoo.agent.loop import run_agent
     from aashoo.agent.tools import cleanup_background_processes
+    from aashoo.ui.editor_server import stop_editor_server
     from aashoo.agent import memory
     from aashoo.ui.file_tree import print_file_tree
     from aashoo.ui.tui import (
@@ -159,6 +206,7 @@ def start_agent_session(project: dict, config: dict):
         except (KeyboardInterrupt, EOFError):
             console.print("\n[dim]Session ended.[/dim]")
             cleanup_background_processes()
+            stop_editor_server()
             break
 
         if not user_input:
@@ -168,6 +216,7 @@ def start_agent_session(project: dict, config: dict):
         if user_input.lower() in ("/exit", "exit", "quit", "/quit"):
             console.print("[dim]Project se bahar aa gaye.[/dim]")
             cleanup_background_processes()
+            stop_editor_server()
             break
 
         elif user_input.lower() == "/bg":
@@ -185,6 +234,16 @@ def start_agent_session(project: dict, config: dict):
                 print_file_tree(project["path"])
             except (ValueError, IndexError):
                 console.print("[red]Usage: /bg-stop <process_id>[/red]")
+
+        elif user_input.lower() in ("/editor", "/code"):
+            import webbrowser
+            from aashoo.ui.editor_server import start_editor_server
+            url = start_editor_server(project["path"])
+            console.print(f"\n[green]🚀 Web Editor running at: [bold]{url}[/bold][/green]")
+            try:
+                webbrowser.open(url)
+            except Exception:
+                pass
 
         elif user_input.lower() == "/help":
             print_command_help()
