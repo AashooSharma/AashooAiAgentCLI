@@ -55,6 +55,7 @@ Direct karo — plan ki zarurat nahi.
 3. search_codebase se relevant code dhundho pehle
 4. run_tests ya run_command se test karo changes ke baad
 5. git_status check karo important changes ke baad
+6. Agar command time legi (jaise pip install, npm install, starting local servers/webapps), to HAMESHA run_command ke bajay start_background_process use karo taaki CLI user block na ho.
 
 ### Agar user deny kare with reason:
 - Reason padho carefully

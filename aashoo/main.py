@@ -165,7 +165,7 @@ def settings_menu(config: dict):
 
 def start_agent_session(project: dict, config: dict):
     """Real agent session."""
-    from aashoo.llm.groq import GroqLLM
+    from aashoo.llm import get_llm_client
     from aashoo.agent.loop import run_agent
     from aashoo.agent.tools import cleanup_background_processes
     from aashoo.ui.editor_server import stop_editor_server
@@ -177,10 +177,7 @@ def start_agent_session(project: dict, config: dict):
     )
 
     # LLM initialize
-    llm = GroqLLM(
-        api_key=config["groq_api_key"],
-        model=config.get("model", "llama-3.3-70b-versatile"),
-    )
+    llm = get_llm_client(config)
 
     auto_allow = config.get("auto_allow_low_risk", True)
 
@@ -204,6 +201,13 @@ def start_agent_session(project: dict, config: dict):
     from rich.prompt import Prompt
     while True:
         try:
+            from aashoo.agent.tools import get_active_processes_list
+            bg_procs = get_active_processes_list()
+            if bg_procs:
+                console.print("\n[bold yellow]⚙️ Running Background Tasks:[/bold yellow]")
+                for bp in bg_procs:
+                    console.print(f"  [dim]• [{bp['id']}] (PID {bp['pid']}): {bp['command']}[/dim]")
+            
             user_input = Prompt.ask(
                 "\n[bold cyan]You[/bold cyan]"
             ).strip()
@@ -279,6 +283,116 @@ def start_agent_session(project: dict, config: dict):
             result = undo_last()
             console.print(f"[yellow]{result}[/yellow]")
             print_file_tree(project["path"])
+
+        elif user_input.lower() in ("/switch", "/api"):
+            # Switch menu
+            console.print(Panel.fit(
+                "[bold white]Dynamic Configuration Switcher[/bold white]\n\n"
+                "  [cyan bold]1[/cyan bold]  Switch Provider\n"
+                "  [cyan bold]2[/cyan bold]  Switch API Key (for current provider)\n"
+                "  [cyan bold]3[/cyan bold]  Switch Model (for current provider)\n"
+                "  [cyan bold]4[/cyan bold]  Add New API Key\n"
+                "  [cyan bold]5[/cyan bold]  Cancel\n",
+                border_style="yellow",
+                title=f"[dim]Active: {config['llm_provider'].upper()} | {config.get('model')}[/dim]",
+                title_align="right"
+            ))
+            
+            from rich.prompt import Prompt
+            try:
+                switch_choice = Prompt.ask("[bold]Switch Option[/bold]", choices=["1", "2", "3", "4", "5"], default="5")
+            except (KeyboardInterrupt, EOFError):
+                continue
+                
+            if switch_choice == "1":
+                providers = ["groq", "google", "openai", "anthropic", "ollama"]
+                console.print("\nAvailable Providers:")
+                for i, p in enumerate(providers, 1):
+                    console.print(f"  [cyan]{i}[/cyan] — {p.upper()}")
+                p_choice = Prompt.ask("Choose provider", choices=[str(i) for i in range(1, len(providers)+1)])
+                new_prov = providers[int(p_choice)-1]
+                
+                if new_prov != "ollama":
+                    keys = config.get(f"{new_prov}_api_keys", [])
+                    if not keys:
+                        console.print(f"[yellow]Koi API key nahi hai {new_prov.upper()} ke liye. Pehle key add karein.[/yellow]")
+                        api_input = Prompt.ask(f"Enter {new_prov.capitalize()} API Key", password=True)
+                        if api_input.strip():
+                            config[f"{new_prov}_api_keys"] = [api_input.strip()]
+                            config[f"active_{new_prov}_key_idx"] = 0
+                        else:
+                            console.print("[red]Cancelled switching provider.[/red]")
+                            continue
+                            
+                config["llm_provider"] = new_prov
+                from aashoo.setup_wizard import PROVIDER_MODELS
+                config["model"] = PROVIDER_MODELS[new_prov][0]
+                
+                from aashoo.setup_wizard import save_config
+                save_config(config)
+                llm = get_llm_client(config)
+                console.print(f"[green]✓ Switched provider to [bold]{new_prov.upper()}[/bold] using model [bold]{config['model']}[/bold].[/green]")
+                
+            elif switch_choice == "2":
+                prov = config["llm_provider"]
+                if prov == "ollama":
+                    console.print("[yellow]Ollama local hai, isme multiple API keys switch nahi hoti.[/yellow]")
+                    continue
+                    
+                keys = config.get(f"{prov}_api_keys", [])
+                if not keys:
+                    console.print(f"[red]No API keys stored for {prov.upper()}. Add one first.[/red]")
+                    continue
+                    
+                console.print(f"\nSaved {prov.upper()} API Keys:")
+                for i, k in enumerate(keys):
+                    starred = k[:6] + "..." + k[-4:] if len(k) > 10 else k
+                    active_marker = " [green]*[/green]" if i == config.get(f"active_{prov}_key_idx", 0) else ""
+                    console.print(f"  [cyan]{i}[/cyan] — {starred}{active_marker}")
+                    
+                k_choice = Prompt.ask("Choose active key", choices=[str(i) for i in range(len(keys))])
+                config[f"active_{prov}_key_idx"] = int(k_choice)
+                
+                from aashoo.setup_wizard import save_config
+                save_config(config)
+                llm = get_llm_client(config)
+                console.print(f"[green]✓ Active key index set to [bold]{k_choice}[/bold].[/green]")
+                
+            elif switch_choice == "3":
+                prov = config["llm_provider"]
+                from aashoo.setup_wizard import PROVIDER_MODELS
+                models_list = PROVIDER_MODELS.get(prov, ["llama-3.3-70b-versatile"])
+                
+                console.print(f"\nAvailable models for {prov.upper()}:")
+                for i, m in enumerate(models_list, 1):
+                    active_marker = " [green]*[/green]" if m == config.get("model") else ""
+                    console.print(f"  [cyan]{i}[/cyan] — {m}{active_marker}")
+                    
+                m_choice = Prompt.ask("Choose model", choices=[str(i) for i in range(1, len(models_list)+1)])
+                config["model"] = models_list[int(m_choice)-1]
+                
+                from aashoo.setup_wizard import save_config
+                save_config(config)
+                llm = get_llm_client(config)
+                console.print(f"[green]✓ Switched model to [bold]{config['model']}[/bold].[/green]")
+                
+            elif switch_choice == "4":
+                prov = config["llm_provider"]
+                if prov == "ollama":
+                    console.print("[yellow]Ollama local hai, API key addition disabled.[/yellow]")
+                    continue
+                    
+                new_key = Prompt.ask(f"Enter new {prov.capitalize()} API Key", password=True).strip()
+                if new_key:
+                    if f"{prov}_api_keys" not in config:
+                        config[f"{prov}_api_keys"] = []
+                    config[f"{prov}_api_keys"].append(new_key)
+                    config[f"active_{prov}_key_idx"] = len(config[f"{prov}_api_keys"]) - 1
+                    
+                    from aashoo.setup_wizard import save_config
+                    save_config(config)
+                    llm = get_llm_client(config)
+                    console.print(f"[green]✓ New API key added and selected as active.[/green]")
 
         else:
             # Agent ko bhejo

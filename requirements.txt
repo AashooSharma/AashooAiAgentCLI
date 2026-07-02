@@ -28,9 +28,9 @@ python-dotenv>=1.0.0          # .env file loading
 # ═══════════════════════════════════════════════════════════════
 # OPTIONAL — Multi-LLM Support (baad mein enable karo)
 # ═══════════════════════════════════════════════════════════════
-# google-generativeai>=0.8.0   # Gemini support
-# openai>=1.50.0               # OpenAI GPT support
-# anthropic>=0.34.0            # Claude support
+google-generativeai>=0.8.0   # Gemini support
+openai>=1.50.0               # OpenAI GPT support
+anthropic>=0.34.0            # Claude support
 # ollama>=0.3.0                # Local LLM via Ollama
 
 # ═══════════════════════════════════════════════════════════════

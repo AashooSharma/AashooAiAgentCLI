@@ -18,12 +18,57 @@ CONFIG_FILE = CONFIG_DIR / "config.json"
 
 DEFAULT_CONFIG = {
     "llm_provider": "groq",
-    "groq_api_key": "",
+    "groq_api_keys": [],
+    "google_api_keys": [],
+    "openai_api_keys": [],
+    "anthropic_api_keys": [],
+    "active_groq_key_idx": 0,
+    "active_google_key_idx": 0,
+    "active_openai_key_idx": 0,
+    "active_anthropic_key_idx": 0,
     "model": "llama-3.3-70b-versatile",
     "projects_dir": str(Path.home() / "aashoo-projects"),
     "theme": "dark",
     "auto_allow_low_risk": True,
     "setup_complete": False,
+}
+
+PROVIDER_MODELS = {
+    "groq": [
+        "llama-3.3-70b-versatile",
+        "mixtral-8x7b-32768",
+        "gemma2-9b-it",
+        "llama-3.1-8b-instant",
+        "llama3-70b-8192",
+    ],
+    "google": [
+        "gemini-1.5-pro",
+        "gemini-1.5-flash",
+        "gemini-2.0-flash-exp",
+        "gemini-1.0-pro",
+        "gemma-2-27b-it",
+    ],
+    "openai": [
+        "gpt-4o",
+        "gpt-4o-mini",
+        "o1-mini",
+        "o1-preview",
+        "gpt-4-turbo",
+    ],
+    "anthropic": [
+        "claude-3-5-sonnet-latest",
+        "claude-3-5-haiku-latest",
+        "claude-3-opus-20240229",
+        "claude-3-sonnet-20240229",
+        "claude-3-haiku-20240307",
+    ],
+    "ollama": [
+        "llama3",
+        "mistral",
+        "qwen2.5-coder",
+        "phi3",
+        "codegemma",
+    ]
 }
 
 
@@ -33,7 +78,15 @@ def load_config() -> dict:
         try:
             with open(CONFIG_FILE, "r") as f:
                 data = json.load(f)
-                # naye keys merge karo jo purani config mein nahi hain
+                
+                # Dynamic migration: old singular api_key keys list mein convert karo
+                for prov in ["groq", "google", "openai", "anthropic"]:
+                    old_key = f"{prov}_api_key"
+                    array_key = f"{prov}_api_keys"
+                    if old_key in data and data[old_key] and not data.get(array_key):
+                        data[array_key] = [data[old_key]]
+                
+                # Naye keys merge karo jo purani config mein nahi hain
                 for k, v in DEFAULT_CONFIG.items():
                     if k not in data:
                         data[k] = v
@@ -60,7 +113,7 @@ def run_wizard():
 
     console.print(Panel.fit(
         "[bold cyan]Aashoo Agent — Setup Wizard[/bold cyan]\n"
-        "[dim]Ek baar setup karo, phir har baar seedha kaam pe lagao[/dim]",
+        "[dim]Ek baar setup karo, API keys daalo aur project par kaam shuru karo[/dim]",
         border_style="cyan"
     ))
 
@@ -68,13 +121,13 @@ def run_wizard():
     config = DEFAULT_CONFIG.copy()
 
     # Step 1: LLM Provider
-    console.print("[bold yellow]Step 1/4 — LLM Provider choose karo[/bold yellow]")
+    console.print("[bold yellow]Step 1/5 — LLM Provider choose karo[/bold yellow]")
     console.print("""
   [cyan]1[/cyan] — Groq API       [dim](fast, free tier available)[/dim]
-  [cyan]2[/cyan] — Google AI      [dim](Gemini models)[/dim]
+  [cyan]2[/cyan] — Google AI      [dim](Gemini models, 1M+ tokens limit)[/dim]
   [cyan]3[/cyan] — OpenAI         [dim](GPT models)[/dim]
   [cyan]4[/cyan] — Anthropic      [dim](Claude models)[/dim]
-  [cyan]5[/cyan] — Ollama         [dim](local, free, needs Ollama installed)[/dim]
+  [cyan]5[/cyan] — Ollama         [dim](local, free, needs Ollama running)[/dim]
     """)
 
     provider_map = {
@@ -90,50 +143,72 @@ def run_wizard():
         choices=["1", "2", "3", "4", "5"],
         default="1"
     )
-    config["llm_provider"] = provider_map[choice]
+    provider = provider_map[choice]
+    config["llm_provider"] = provider
 
     console.print()
 
-    # Step 2: API Key
-    console.print("[bold yellow]Step 2/4 — API Key enter karo[/bold yellow]")
+    # Step 2: API Keys (Multiple keys setup support)
+    console.print("[bold yellow]Step 2/5 — API Key(s) enter karo[/bold yellow]")
 
-    if config["llm_provider"] == "ollama":
+    if provider == "ollama":
         console.print("[dim]Ollama local hai, koi API key nahi chahiye[/dim]")
-        config["groq_api_key"] = "ollama"
         ollama_url = Prompt.ask(
             "Ollama URL",
             default="http://localhost:11434"
         )
         config["ollama_url"] = ollama_url
     else:
-        provider_name = config["llm_provider"].capitalize()
+        provider_name = provider.capitalize()
         key_env_map = {
             "groq": "GROQ_API_KEY",
             "google": "GOOGLE_API_KEY",
             "openai": "OPENAI_API_KEY",
             "anthropic": "ANTHROPIC_API_KEY",
         }
-        env_var = key_env_map.get(config["llm_provider"], "API_KEY")
+        env_var = key_env_map.get(provider, "API_KEY")
 
-        # env se check karo pehle
+        # Env se primary key try karo
         existing = os.environ.get(env_var, "")
+        keys = []
         if existing:
             console.print(f"[green]✓ {env_var} environment variable mili[/green]")
-            use_env = Confirm.ask("Yahi use karein?", default=True)
+            use_env = Confirm.ask("Yahi API key primary key ki tarah use karein?", default=True)
             if use_env:
-                config["groq_api_key"] = existing
-            else:
-                api_key = Prompt.ask(f"{provider_name} API Key", password=True)
-                config["groq_api_key"] = api_key
-        else:
-            console.print(f"[dim]Groq free tier: https://console.groq.com[/dim]")
-            api_key = Prompt.ask(f"{provider_name} API Key", password=True)
-            config["groq_api_key"] = api_key
+                keys.append(existing)
+
+        if not keys:
+            console.print(
+                f"[dim]Multiple keys de sakte hain (comma ',' se separate karke) rate limits bypass karne ke liye.[/dim]"
+            )
+            api_input = Prompt.ask(f"{provider_name} API Key(s)", password=True)
+            keys = [k.strip() for k in api_input.split(",") if k.strip()]
+
+        config[f"{provider}_api_keys"] = keys
+        config[f"active_{provider}_key_idx"] = 0
+        console.print(f"[green]✓ {len(keys)} API Key(s) add ho gayi hain.[/green]")
 
     console.print()
 
-    # Step 3: Projects folder
-    console.print("[bold yellow]Step 3/4 — Projects folder[/bold yellow]")
+    # Step 3: Model selection
+    console.print("[bold yellow]Step 3/5 — Model choose karo[/bold yellow]")
+    models_list = PROVIDER_MODELS.get(provider, ["llama-3.3-70b-versatile"])
+    
+    for idx, model_opt in enumerate(models_list, 1):
+        console.print(f"  [cyan]{idx}[/cyan] — {model_opt}")
+
+    model_choice = Prompt.ask(
+        "Apna model select karo",
+        choices=[str(i) for i in range(1, len(models_list) + 1)],
+        default="1"
+    )
+    config["model"] = models_list[int(model_choice) - 1]
+    console.print(f"[green]✓ Selected Model: {config['model']}[/green]")
+
+    console.print()
+
+    # Step 4: Projects folder
+    console.print("[bold yellow]Step 4/5 — Projects folder[/bold yellow]")
     default_dir = str(Path.home() / "aashoo-projects")
     projects_dir = Prompt.ask(
         "Projects folder path",
@@ -145,10 +220,10 @@ def run_wizard():
 
     console.print()
 
-    # Step 4: Preferences
-    console.print("[bold yellow]Step 4/4 — Preferences[/bold yellow]")
+    # Step 5: Preferences
+    console.print("[bold yellow]Step 5/5 — Preferences[/bold yellow]")
     config["auto_allow_low_risk"] = Confirm.ask(
-        "Low-risk tools (read_file, web_search) auto-allow karein?",
+        "Low-risk tools (read_file, web_search, list_directory) auto-allow karein?",
         default=True
     )
 
@@ -161,9 +236,10 @@ def run_wizard():
     console.print(Panel(
         "[bold green]✓ Setup complete![/bold green]\n\n"
         f"Provider : [cyan]{config['llm_provider']}[/cyan]\n"
+        f"Model    : [cyan]{config['model']}[/cyan]\n"
         f"Projects : [cyan]{config['projects_dir']}[/cyan]\n\n"
         "[dim]Config saved: ~/.aashoo/config.json[/dim]\n"
-        "[dim]Change karne ke liye: aashoo --setup[/dim]",
+        "[dim]Change karne ke liye run karein: aashoo --setup[/dim]",
         border_style="green"
     ))
 

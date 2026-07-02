@@ -214,6 +214,7 @@ def print_command_help():
         "[cyan]/bg-stop N[/cyan]  — background process N ko stop karo\n"
         "[cyan]/editor[/cyan]     — Monaco Web Editor launch karo\n"
         "[cyan]/code[/cyan]       — Monaco Web Editor launch karo\n"
+        "[cyan]/switch[/cyan]     — Dynamic Provider/Model/API Key switcher\n"
         "[cyan]/exit[/cyan]       — project se bahar jao\n",
         title="[bold]Commands[/bold]",
         border_style="dim",
