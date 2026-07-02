@@ -1,0 +1,35 @@
+# Aashoo Agent — Requirements
+# pip install -r requirements.txt
+
+# Core LLM
+groq>=1.5.0
+
+# Terminal UI
+rich>=15.0.0
+
+# HTTP requests (web_search)
+requests>=2.34.0
+
+# Git integration
+gitpython>=3.1.40
+
+# Environment variables
+python-dotenv>=1.1.0
+
+# Code outline parsing (get_file_outline tool)
+# Built-in: ast module use hoga (no extra install needed)
+
+# Testing support (run_tests tool)
+# Built-in: subprocess use hoga (no extra install needed)
+
+# ─── Phase 2 (baad mein add karna) ───────────────────────
+# Textual TUI (split view, clickable tree)
+# textual>=0.80.0
+
+# Multi-LLM support
+# google-generativeai>=0.8.0   # Google AI
+# openai>=1.50.0               # OpenAI
+# anthropic>=0.34.0            # Anthropic Claude
+
+# Faster search (optional, ripgrep wrapper)
+# ripgrepy>=2.0.0
