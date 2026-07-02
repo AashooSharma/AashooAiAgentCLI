@@ -1,0 +1,21 @@
+# Python environment
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Sensitive keys and environment files
+.env
+.env.*
+!.env.example
+
+# Local storage and cache
+.aashoo/
+logs/
+*.log
+
+# OS-specific
+.DS_Store
+Thumbs.db
