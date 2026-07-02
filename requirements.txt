@@ -6,6 +6,7 @@ groq>=0.9.0                   # Groq API (llama-3.3-70b-versatile)
 
 # ─── Terminal UI ──────────────────────────────────────────────
 rich>=13.7.0                  # Pretty terminal output, panels, tables
+prompt_toolkit>=3.0.0         # Advanced multiline prompt and keybindings
 
 # ─── HTTP Requests (web_search tool) ─────────────────────────
 requests>=2.31.0              # HTTP client for web search

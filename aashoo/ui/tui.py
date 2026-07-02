@@ -215,7 +215,9 @@ def print_command_help():
         "[cyan]/editor[/cyan]     — Monaco Web Editor launch karo\n"
         "[cyan]/code[/cyan]       — Monaco Web Editor launch karo\n"
         "[cyan]/switch[/cyan]     — Dynamic Provider/Model/API Key switcher\n"
-        "[cyan]/exit[/cyan]       — project se bahar jao\n",
+        "[cyan]/exit[/cyan]       — project se bahar jao\n\n"
+        "[bold yellow]💡 Tip:[/bold yellow] Multi-line input supported. [green]Enter[/green] se new line aayegi. "
+        "Prompt submit karne ke liye [green]Ctrl + S[/green] press karein.",
         title="[bold]Commands[/bold]",
         border_style="dim",
     ))

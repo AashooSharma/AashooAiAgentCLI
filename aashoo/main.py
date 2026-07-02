@@ -199,6 +199,24 @@ def start_agent_session(project: dict, config: dict):
 
     # Chat loop
     from rich.prompt import Prompt
+    
+    HAS_PT = False
+    try:
+        from prompt_toolkit import PromptSession
+        from prompt_toolkit.key_binding import KeyBindings
+        from prompt_toolkit.formatted_text import HTML
+
+        kb = KeyBindings()
+
+        @kb.add('c-s')  # Ctrl+S to submit prompt
+        def _(event):
+            event.current_buffer.validate_and_handle()
+
+        pt_session = PromptSession(key_bindings=kb, multiline=True)
+        HAS_PT = True
+    except ImportError:
+        pass
+
     while True:
         try:
             from aashoo.agent.tools import get_active_processes_list
@@ -208,9 +226,14 @@ def start_agent_session(project: dict, config: dict):
                 for bp in bg_procs:
                     console.print(f"  [dim]• [{bp['id']}] (PID {bp['pid']}): {bp['command']}[/dim]")
             
-            user_input = Prompt.ask(
-                "\n[bold cyan]You[/bold cyan]"
-            ).strip()
+            if HAS_PT:
+                user_input = pt_session.prompt(
+                    HTML('\n<ansicyan><b>You</b></ansicyan> <ansigray>(Enter = new line, Ctrl+S = submit):</ansigray>\n')
+                ).strip()
+            else:
+                user_input = Prompt.ask(
+                    "\n[bold cyan]You[/bold cyan]"
+                ).strip()
         except (KeyboardInterrupt, EOFError):
             console.print("\n[dim]Session ended.[/dim]")
             cleanup_background_processes()
