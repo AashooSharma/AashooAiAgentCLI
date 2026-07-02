@@ -53,22 +53,32 @@ def get_projects_list(projects_dir: str) -> list[dict]:
 
 
 def create_project(projects_dir: str) -> dict | None:
-    """Naya project create karo."""
+    """Naya project create karo. Ctrl+C ya 'back' type karne par None return."""
     console.print()
     console.print("[bold cyan]— New Project —[/bold cyan]")
+    console.print("[dim]Wapas jaane ke liye: Enter dabao bina kuch likhe ya Ctrl+C[/dim]\n")
 
-    name = Prompt.ask("[bold]Project naam[/bold]")
+    try:
+        name = Prompt.ask("[bold]Project naam[/bold]")
+    except (KeyboardInterrupt, EOFError):
+        console.print("\n[dim]← Main menu par wapas aa gaye.[/dim]")
+        return None
+
     name = name.strip().replace(" ", "-").lower()
 
     if not name:
-        console.print("[red]Invalid naam[/red]")
+        console.print("[dim]← Main menu par wapas aa gaye.[/dim]")
         return None
 
     project_path = Path(projects_dir) / name
 
     if project_path.exists():
         console.print(f"[yellow]'{name}' pehle se exist karta hai[/yellow]")
-        open_existing = Confirm.ask("Isko open karein?", default=True)
+        try:
+            open_existing = Confirm.ask("Isko open karein?", default=True)
+        except (KeyboardInterrupt, EOFError):
+            console.print("\n[dim]← Main menu par wapas aa gaye.[/dim]")
+            return None
         if open_existing:
             return {
                 "name": name,
@@ -81,7 +91,12 @@ def create_project(projects_dir: str) -> dict | None:
     project_path.mkdir(parents=True)
 
     # Git init
-    init_git = Confirm.ask("Git initialize karein?", default=True)
+    try:
+        init_git = Confirm.ask("Git initialize karein?", default=True)
+    except (KeyboardInterrupt, EOFError):
+        console.print("\n[dim]← Main menu par wapas aa gaye.[/dim]")
+        return None
+
     if init_git:
         try:
             subprocess.run(
@@ -117,7 +132,7 @@ def create_project(projects_dir: str) -> dict | None:
 
 
 def open_project(projects_dir: str) -> dict | None:
-    """Existing project open karo."""
+    """Existing project open karo. 0 ya Ctrl+C se wapas."""
     projects = get_projects_list(projects_dir)
 
     if not projects:
@@ -129,6 +144,7 @@ def open_project(projects_dir: str) -> dict | None:
 
     console.print()
     console.print("[bold cyan]— Open Project —[/bold cyan]")
+    console.print("[dim]Wapas jaane ke liye: 0 likhein ya Ctrl+C[/dim]")
 
     # Table dikhao
     table = Table(show_header=True, header_style="bold cyan",
@@ -152,26 +168,40 @@ def open_project(projects_dir: str) -> dict | None:
     console.print(table)
     console.print()
 
-    choices = [str(i) for i in range(1, len(projects) + 1)]
-    choice = Prompt.ask(
-        "Project number select karo",
-        choices=choices
-    )
+    choices = ["0"] + [str(i) for i in range(1, len(projects) + 1)]
+    try:
+        choice = Prompt.ask(
+            "Project number select karo [bold cyan](0 = Back)[/bold cyan]",
+            choices=choices
+        )
+    except (KeyboardInterrupt, EOFError):
+        console.print("\n[dim]← Main menu par wapas aa gaye.[/dim]")
+        return None
+
+    if choice == "0":
+        console.print("[dim]← Main menu par wapas aa gaye.[/dim]")
+        return None
 
     selected = projects[int(choice) - 1]
     return selected
 
 
 def clone_github(projects_dir: str) -> dict | None:
-    """GitHub repo clone karo."""
+    """GitHub repo clone karo. Ctrl+C ya blank se wapas."""
     console.print()
     console.print("[bold cyan]— GitHub Clone —[/bold cyan]")
+    console.print("[dim]Wapas jaane ke liye: Enter dabao bina kuch likhe ya Ctrl+C[/dim]\n")
 
-    url = Prompt.ask("[bold]GitHub URL[/bold]")
+    try:
+        url = Prompt.ask("[bold]GitHub URL[/bold]")
+    except (KeyboardInterrupt, EOFError):
+        console.print("\n[dim]← Main menu par wapas aa gaye.[/dim]")
+        return None
+
     url = url.strip()
 
     if not url:
-        console.print("[red]Invalid URL[/red]")
+        console.print("[dim]← Main menu par wapas aa gaye.[/dim]")
         return None
 
     # Naam extract karo URL se
@@ -183,7 +213,11 @@ def clone_github(projects_dir: str) -> dict | None:
 
     if project_path.exists():
         console.print(f"[yellow]'{repo_name}' pehle se exist karta hai[/yellow]")
-        open_existing = Confirm.ask("Isko open karein?", default=True)
+        try:
+            open_existing = Confirm.ask("Isko open karein?", default=True)
+        except (KeyboardInterrupt, EOFError):
+            console.print("\n[dim]← Main menu par wapas aa gaye.[/dim]")
+            return None
         if open_existing:
             return {
                 "name": repo_name,
@@ -213,4 +247,7 @@ def clone_github(projects_dir: str) -> dict | None:
 
     except FileNotFoundError:
         console.print("[red]Git nahi mila. Install karo: pkg install git (Termux) ya apt install git[/red]")
+        return None
+    except (KeyboardInterrupt, EOFError):
+        console.print("\n[dim]← Main menu par wapas aa gaye.[/dim]")
         return None

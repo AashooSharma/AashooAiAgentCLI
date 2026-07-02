@@ -95,11 +95,15 @@ def main_menu(config: dict) -> str:
     ))
 
     from rich.prompt import Prompt
-    choice = Prompt.ask(
-        "[bold]Choice[/bold]",
-        choices=["1", "2", "3", "4", "5"],
-        default="1"
-    )
+    try:
+        choice = Prompt.ask(
+            "[bold]Choice[/bold]",
+            choices=["1", "2", "3", "4", "5"],
+            default="5"
+        )
+    except (KeyboardInterrupt, EOFError):
+        console.print("\n[dim]Bye! Phir milenge.[/dim]\n")
+        sys.exit(0)
     return choice
 
 
@@ -302,39 +306,47 @@ def main():
         config = load_config()
 
     # Main loop
-    while True:
-        console.clear()
-        print_logo()
+    try:
+        while True:
+            console.clear()
+            print_logo()
 
-        choice = main_menu(config)
+            choice = main_menu(config)
 
-        if choice == "1":
-            # New Project
-            project = create_project(config["projects_dir"])
-            if project:
-                start_agent_session(project, config)
+            if choice == "1":
+                # New Project
+                project = create_project(config["projects_dir"])
+                if project:
+                    start_agent_session(project, config)
 
-        elif choice == "2":
-            # Open Project
-            project = open_project(config["projects_dir"])
-            if project:
-                start_agent_session(project, config)
+            elif choice == "2":
+                # Open Project
+                project = open_project(config["projects_dir"])
+                if project:
+                    start_agent_session(project, config)
 
-        elif choice == "3":
-            # GitHub Clone
-            project = clone_github(config["projects_dir"])
-            if project:
-                start_agent_session(project, config)
+            elif choice == "3":
+                # GitHub Clone
+                project = clone_github(config["projects_dir"])
+                if project:
+                    start_agent_session(project, config)
 
-        elif choice == "4":
-            # Settings
-            settings_menu(config)
-            # config reload karo agar wizard ne change kiya
-            config = load_config()
+            elif choice == "4":
+                # Settings
+                try:
+                    settings_menu(config)
+                except (KeyboardInterrupt, EOFError):
+                    pass
+                # config reload karo agar wizard ne change kiya
+                config = load_config()
 
-        elif choice == "5":
-            console.print("\n[dim]Bye! Phir milenge.[/dim]\n")
-            sys.exit(0)
+            elif choice == "5":
+                console.print("\n[dim]Bye! Phir milenge.[/dim]\n")
+                sys.exit(0)
+
+    except (KeyboardInterrupt, EOFError):
+        console.print("\n[dim]Bye! Phir milenge.[/dim]\n")
+        sys.exit(0)
 
 
 if __name__ == "__main__":
