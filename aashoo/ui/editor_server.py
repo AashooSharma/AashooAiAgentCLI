@@ -570,13 +570,20 @@ def start_editor_server(project_path: str, port: int = 8080) -> str:
 
 
 def stop_editor_server():
-    """Web Server ko stop karta hai."""
+    """Web Server ko stop karta hai — non-blocking, instant return."""
     global _server_instance, _server_thread
-    if _server_instance is not None:
-        try:
-            _server_instance.shutdown()
-            _server_instance.server_close()
-        except Exception:
-            pass
+    instance = _server_instance
+    if instance is not None:
         _server_instance = None
         _server_thread = None
+        # Shutdown ko background mein karo taaki main thread block na ho
+        def _do_shutdown():
+            try:
+                instance.shutdown()
+                instance.server_close()
+            except Exception:
+                pass
+        t = threading.Thread(target=_do_shutdown, daemon=True)
+        t.start()
+        # Maximum 0.5 second wait — phir chhod do (daemon thread khud clean ho jayega)
+        t.join(timeout=0.5)
