@@ -1,35 +1,40 @@
 # Aashoo Agent — Requirements
 # pip install -r requirements.txt
 
-# Core LLM
-groq>=1.5.0
+# ─── Core LLM ─────────────────────────────────────────────────
+groq>=0.9.0                   # Groq API (llama-3.3-70b-versatile)
 
-# Terminal UI
-rich>=15.0.0
+# ─── Terminal UI ──────────────────────────────────────────────
+rich>=13.7.0                  # Pretty terminal output, panels, tables
 
-# HTTP requests (web_search)
-requests>=2.34.0
+# ─── HTTP Requests (web_search tool) ─────────────────────────
+requests>=2.31.0              # HTTP client for web search
 
-# Git integration
-gitpython>=3.1.40
+# ─── Git Integration (clone_github, git tools) ───────────────
+gitpython>=3.1.40             # Git operations via Python
 
-# Environment variables
-python-dotenv>=1.1.0
+# ─── Environment Variables ────────────────────────────────────
+python-dotenv>=1.0.0          # .env file loading
 
-# Code outline parsing (get_file_outline tool)
-# Built-in: ast module use hoga (no extra install needed)
+# ─── Built-in (no install needed) ────────────────────────────
+# sqlite3   → memory.db (conversation history, always-allow)
+# ast       → get_file_outline tool (code parsing)
+# subprocess → run_tests, run_command tools
+# pathlib   → file path handling
+# json      → tool call parsing
+# http.server → editor_server.py (web editor, zero deps)
+# threading → editor_server background thread
 
-# Testing support (run_tests tool)
-# Built-in: subprocess use hoga (no extra install needed)
+# ═══════════════════════════════════════════════════════════════
+# OPTIONAL — Multi-LLM Support (baad mein enable karo)
+# ═══════════════════════════════════════════════════════════════
+# google-generativeai>=0.8.0   # Gemini support
+# openai>=1.50.0               # OpenAI GPT support
+# anthropic>=0.34.0            # Claude support
+# ollama>=0.3.0                # Local LLM via Ollama
 
-# ─── Phase 2 (baad mein add karna) ───────────────────────
-# Textual TUI (split view, clickable tree)
-# textual>=0.80.0
-
-# Multi-LLM support
-# google-generativeai>=0.8.0   # Google AI
-# openai>=1.50.0               # OpenAI
-# anthropic>=0.34.0            # Anthropic Claude
-
-# Faster search (optional, ripgrep wrapper)
-# ripgrepy>=2.0.0
+# ═══════════════════════════════════════════════════════════════
+# OPTIONAL — Enhanced Features
+# ═══════════════════════════════════════════════════════════════
+# textual>=0.80.0              # Phase 2: Advanced TUI (split view)
+# ripgrepy>=2.0.0              # Faster file search (ripgrep wrapper)
