@@ -75,7 +75,7 @@ def print_logo():
     console.print(rainbow_text(ACTIVE_LOGO))
     console.print(
         "[dim]  Personal AI Coding Agent — v0.1.0  |  "
-        "github.com/sdbabhishek/aashoo-agent[/dim]\n"
+        "github.com/AashooSharma/AashooAiAgentCLI[/dim]\n"
     )
 
 
