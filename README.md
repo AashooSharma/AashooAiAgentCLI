@@ -21,6 +21,12 @@ Unlike other heavy agents, it is **optimized for speed, Git-aware, and fully Ter
 
 ---
 
+### 🌐 **Aashoo AI Agent CLI official website**
+![website](assets/website-image.png)
+[🔗🌐 Click here to visit the official website](https://aashoosharma.github.io/AashooAiAgentCLI/)  
+
+---
+
 ## 🛠️ Multi-LLM & Rate Limit Bypass Setup
 Aashoo supports multiple API keys per provider to seamlessly bypass API rate limits on the fly. Supported providers include:
 
