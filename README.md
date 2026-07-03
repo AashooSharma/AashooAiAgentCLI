@@ -66,6 +66,15 @@ Aashoo supports multiple API keys per provider to seamlessly bypass API rate lim
   <img src="assets/agent_running.png" alt="Agent Working Demo" width="80%" />
 </p>
 
+### 4. termux screen shot
+<p align="center">
+  <img src="assets/termux1.jpg" alt="Termux Screenshot" width="80%" />
+</p>
+
+### 5. termux screen shot
+<p align="center">
+  <img src="assets/termux2.jpg" alt="Termux Screenshot" width="80%" />
+</p>
 ---
 
 ## 🚀 Installation & Setup
