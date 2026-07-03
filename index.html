@@ -1,792 +1,862 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AashooAiAgentCLI — Open Source AI Coding Agent for Terminal</title>
-  <meta name="description" content="Free, open-source AI coding agent that runs in your terminal — on Android Termux, Linux, macOS & Windows. Plan-first workflow, smart permissions, git integration, multi-LLM support." />
-  <meta property="og:title" content="AashooAiAgentCLI — AI Coding Agent for Terminal" />
-  <meta property="og:description" content="The only AI coding agent that runs on Android Termux. Free, open-source, plan-first, permission-aware." />
-  <meta property="og:type" content="website" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AashooAiAgentCLI — Open Source AI Coding Agent for Terminal</title>
+    <meta name="description"
+        content="Free, open-source AI coding agent that runs in your terminal — on Android Termux, Linux, macOS & Windows. Plan-first workflow, smart permissions, git integration, multi-LLM support." />
+    <meta property="og:title" content="AashooAiAgentCLI — AI Coding Agent for Terminal" />
+    <meta property="og:description"
+        content="The only AI coding agent that runs on Android Termux. Free, open-source, plan-first, permission-aware." />
+    <meta property="og:type" content="website" />
+    <meta name="google-site-verification" content="KS_yDoimKziTlEbKTcXEVD6hbWaMw2yNDeoGtxmHEHw" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
 
-  <!-- Background canvas effects -->
-  <div class="bg-grid"></div>
-  <div class="glow-orb orb-1"></div>
-  <div class="glow-orb orb-2"></div>
-  <div class="glow-orb orb-3"></div>
+    <!-- Background canvas effects -->
+    <div class="bg-grid"></div>
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
 
-  <!-- ═══════════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════════
        HEADER
   ═══════════════════════════════════════════════ -->
-  <header class="site-header" id="siteHeader">
-    <div class="container nav-container">
-      <a href="#" class="nav-brand">
-        <span class="brand-icon">⚡</span>
-        <span class="brand-name">AashooAiAgent<span class="brand-accent">CLI</span></span>
-        <span class="brand-badge">Open Source</span>
-      </a>
+    <header class="site-header" id="siteHeader">
+        <div class="container nav-container">
+            <a href="#" class="nav-brand">
+                <span class="brand-icon">⚡</span>
+                <span class="brand-name">AashooAiAgent<span class="brand-accent">CLI</span></span>
+                <span class="brand-badge">Open Source</span>
+            </a>
 
-      <nav class="nav-menu" id="navMenu">
-        <a href="#features" class="nav-link">Features</a>
-        <a href="#how-it-works" class="nav-link">How It Works</a>
-        <a href="#install" class="nav-link">Installation</a>
-        <a href="#commands" class="nav-link">Commands</a>
-        <a href="#comparison" class="nav-link">Compare</a>
-        <a href="https://github.com/AashooSharma/AashooAiAgentCLI" target="_blank" rel="noopener" class="nav-cta">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-          Star on GitHub
-        </a>
-      </nav>
+            <nav class="nav-menu" id="navMenu">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#how-it-works" class="nav-link">How It Works</a>
+                <a href="#install" class="nav-link">Installation</a>
+                <a href="#commands" class="nav-link">Commands</a>
+                <a href="#comparison" class="nav-link">Compare</a>
+                <a href="https://github.com/AashooSharma/AashooAiAgentCLI" target="_blank" rel="noopener"
+                    class="nav-cta">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+                    </svg>
+                    Star on GitHub
+                </a>
+            </nav>
 
-      <button class="hamburger" id="hamburger" aria-label="Open menu">
-        <span></span><span></span><span></span>
-      </button>
+            <button class="hamburger" id="hamburger" aria-label="Open menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Nav -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-inner">
+            <a href="#features" class="mobile-nav-link">Features</a>
+            <a href="#how-it-works" class="mobile-nav-link">How It Works</a>
+            <a href="#install" class="mobile-nav-link">Installation</a>
+            <a href="#commands" class="mobile-nav-link">Commands</a>
+            <a href="#comparison" class="mobile-nav-link">Compare</a>
+            <a href="https://github.com/AashooSharma/AashooAiAgentCLI" target="_blank" rel="noopener"
+                class="mobile-nav-link github-link">
+                ⭐ Star on GitHub
+            </a>
+        </div>
     </div>
-  </header>
 
-  <!-- Mobile Nav -->
-  <div class="mobile-nav" id="mobileNav">
-    <div class="mobile-nav-inner">
-      <a href="#features" class="mobile-nav-link">Features</a>
-      <a href="#how-it-works" class="mobile-nav-link">How It Works</a>
-      <a href="#install" class="mobile-nav-link">Installation</a>
-      <a href="#commands" class="mobile-nav-link">Commands</a>
-      <a href="#comparison" class="mobile-nav-link">Compare</a>
-      <a href="https://github.com/AashooSharma/AashooAiAgentCLI" target="_blank" rel="noopener" class="mobile-nav-link github-link">
-        ⭐ Star on GitHub
-      </a>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════════
        HERO SECTION
   ═══════════════════════════════════════════════ -->
-  <section class="hero" id="home">
-    <div class="container">
-      <div class="hero-content reveal">
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content reveal">
 
-        <!-- Termux badge — USP -->
-        <div class="hero-badge">
-          <span class="badge-dot"></span>
-          <span>World's First AI Agent for Android Termux</span>
+                <!-- Termux badge — USP -->
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    <span>World's First AI Agent for Android Termux</span>
+                </div>
+
+                <h1 class="hero-heading">
+                    Code Anywhere.<br />
+                    <span class="gradient-text">Android. PC. Server.</span>
+                </h1>
+
+                <p class="hero-subheading">
+                    AashooAiAgentCLI is a free, open-source AI coding agent that runs directly in your terminal —
+                    on any device, any OS. It reads your code, writes files, runs commands,
+                    and searches the web, all with your full permission and control.
+                </p>
+
+                <!-- Platform pills -->
+                <div class="platform-pills" id="heroPills">
+                    <span class="pill pill-highlight" data-os="termux" style="cursor: pointer;">📱 Android /
+                        Termux</span>
+                    <span class="pill" data-os="linux" style="cursor: pointer;">🐧 Linux</span>
+                    <span class="pill" data-os="macos" style="cursor: pointer;">🍎 macOS</span>
+                    <span class="pill" data-os="windows" style="cursor: pointer;">🪟 Windows</span>
+                </div>
+
+                <!-- Hero terminal -->
+                <div class="hero-terminal">
+                    <div class="terminal-bar">
+                        <span class="tb-dot r"></span>
+                        <span class="tb-dot y"></span>
+                        <span class="tb-dot g"></span>
+                        <span class="tb-title" id="terminalTitle">bash — AashooAiAgentCLI</span>
+                    </div>
+                    <div class="terminal-body" id="terminalBody">
+                        <!-- Simulated terminal lines are rendered dynamically via script.js -->
+                    </div>
+                </div>
+
+                <div class="hero-actions">
+                    <a href="#install" class="btn-primary">Get Started Free →</a>
+                    <a href="https://github.com/AashooSharma/AashooAiAgentCLI" target="_blank" class="btn-outline">
+                        <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
+                            <path
+                                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+                        </svg>
+                        View on GitHub
+                    </a>
+                </div>
+
+                <div class="hero-meta">
+                    <span>⚡ MIT License</span>
+                    <span class="sep">·</span>
+                    <span>🆓 Free Forever</span>
+                    <span class="sep">·</span>
+                    <span>🐍 Python 3.9+</span>
+                    <span class="sep">·</span>
+                    <span>🔒 No Data Sent to Servers</span>
+                </div>
+
+            </div>
         </div>
+    </section>
 
-        <h1 class="hero-heading">
-          Code Anywhere.<br />
-          <span class="gradient-text">Android. PC. Server.</span>
-        </h1>
-
-        <p class="hero-subheading">
-          AashooAiAgentCLI is a free, open-source AI coding agent that runs directly in your terminal —
-          on any device, any OS. It reads your code, writes files, runs commands,
-          and searches the web, all with your full permission and control.
-        </p>
-
-        <!-- Platform pills -->
-        <div class="platform-pills" id="heroPills">
-          <span class="pill pill-highlight" data-os="termux" style="cursor: pointer;">📱 Android / Termux</span>
-          <span class="pill" data-os="linux" style="cursor: pointer;">🐧 Linux</span>
-          <span class="pill" data-os="macos" style="cursor: pointer;">🍎 macOS</span>
-          <span class="pill" data-os="windows" style="cursor: pointer;">🪟 Windows</span>
-        </div>
-
-        <!-- Hero terminal -->
-        <div class="hero-terminal">
-          <div class="terminal-bar">
-            <span class="tb-dot r"></span>
-            <span class="tb-dot y"></span>
-            <span class="tb-dot g"></span>
-            <span class="tb-title" id="terminalTitle">bash — AashooAiAgentCLI</span>
-          </div>
-          <div class="terminal-body" id="terminalBody">
-            <!-- Simulated terminal lines are rendered dynamically via script.js -->
-          </div>
-        </div>
-
-        <div class="hero-actions">
-          <a href="#install" class="btn-primary">Get Started Free →</a>
-          <a href="https://github.com/AashooSharma/AashooAiAgentCLI" target="_blank" class="btn-outline">
-            <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-            View on GitHub
-          </a>
-        </div>
-
-        <div class="hero-meta">
-          <span>⚡ MIT License</span>
-          <span class="sep">·</span>
-          <span>🆓 Free Forever</span>
-          <span class="sep">·</span>
-          <span>🐍 Python 3.9+</span>
-          <span class="sep">·</span>
-          <span>🔒 No Data Sent to Servers</span>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════════
        STATS BAR
   ═══════════════════════════════════════════════ -->
-  <section class="stats-bar">
-    <div class="container stats-grid">
-      <div class="stat-item">
-        <span class="stat-number">5</span>
-        <span class="stat-label">LLM Providers</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">19</span>
-        <span class="stat-label">Built-in Tools</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">100%</span>
-        <span class="stat-label">Open Source</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">0</span>
-        <span class="stat-label">Telemetry / Tracking</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">#1</span>
-        <span class="stat-label">Agent with Termux Support</span>
-      </div>
-    </div>
-  </section>
+    <section class="stats-bar">
+        <div class="container stats-grid">
+            <div class="stat-item">
+                <span class="stat-number">5</span>
+                <span class="stat-label">LLM Providers</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">19</span>
+                <span class="stat-label">Built-in Tools</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">100%</span>
+                <span class="stat-label">Open Source</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">0</span>
+                <span class="stat-label">Telemetry / Tracking</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">#1</span>
+                <span class="stat-label">Agent with Termux Support</span>
+            </div>
+        </div>
+    </section>
 
-  <!-- ═══════════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════════
        FEATURES SECTION
   ═══════════════════════════════════════════════ -->
-  <section class="section features-section" id="features">
-    <div class="container">
-      <div class="section-label reveal">WHAT MAKES IT DIFFERENT</div>
-      <h2 class="section-title reveal">Built for Developers Who Code Everywhere</h2>
-      <p class="section-subtitle reveal">
-        Not another cloud agent. AashooAiAgentCLI runs entirely on your device, respects your
-        workflow, and gives you full control over every action it takes.
-      </p>
+    <section class="section features-section" id="features">
+        <div class="container">
+            <div class="section-label reveal">WHAT MAKES IT DIFFERENT</div>
+            <h2 class="section-title reveal">Built for Developers Who Code Everywhere</h2>
+            <p class="section-subtitle reveal">
+                Not another cloud agent. AashooAiAgentCLI runs entirely on your device, respects your
+                workflow, and gives you full control over every action it takes.
+            </p>
 
-      <div class="features-grid">
+            <div class="features-grid">
 
-        <!-- USP Card -->
-        <div class="feature-card usp-card reveal">
-          <div class="usp-label">UNIQUE TO AASHOO</div>
-          <div class="feature-icon-lg">📱</div>
-          <h3>Native Android & Termux Support</h3>
-          <p>The only AI coding agent that works natively on Android via Termux — no root required, no server needed. Code on your phone during commute, then continue on your laptop. Same project, same memory.</p>
-          <div class="feature-tags">
-            <span>arm64 optimized</span>
-            <span>No root needed</span>
-            <span>Works offline w/ Ollama</span>
-          </div>
+                <!-- USP Card -->
+                <div class="feature-card usp-card reveal">
+                    <div class="usp-label">UNIQUE TO AASHOO</div>
+                    <div class="feature-icon-lg">📱</div>
+                    <h3>Native Android & Termux Support</h3>
+                    <p>The only AI coding agent that works natively on Android via Termux — no root required, no server
+                        needed. Code on your phone during commute, then continue on your laptop. Same project, same
+                        memory.</p>
+                    <div class="feature-tags">
+                        <span>arm64 optimized</span>
+                        <span>No root needed</span>
+                        <span>Works offline w/ Ollama</span>
+                    </div>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Plan-First Approach</h3>
+                    <p>Before touching a single file, the agent presents you a detailed step-by-step plan. Review it,
+                        edit it, or redirect it — then approve for execution. No surprises.</p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Smart Permission System</h3>
+                    <p>Every high-risk action (modifying files, running shell commands) needs your go-ahead. Choose
+                        Allow, Always Allow, Deny, or Deny with a reason that teaches the agent an alternative approach.
+                    </p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-icon">⛓️</div>
+                    <h3>Multi-LLM & Key Rotation</h3>
+                    <p>Connect Groq, Google Gemini, OpenAI, Anthropic Claude, or local Ollama. Add multiple API keys per
+                        provider — Aashoo auto-rotates them to bypass rate limits seamlessly.</p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Git-Aware File Tree</h3>
+                    <p>See your project's live git-status colored file tree — green for new files, yellow for changes,
+                        red for deletions. Refreshes automatically after every agent action.</p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Background Process Manager</h3>
+                    <p>Start Flask, Django, Node.js, or any server in the background without blocking your terminal.
+                        Check logs, list processes, and stop them — all within the agent session.</p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-icon">💾</div>
+                    <h3>Persistent Memory Per Project</h3>
+                    <p>Conversation history, your always-allow tool preferences, and agent notes are saved per project
+                        in a local SQLite database. Pick up exactly where you left off.</p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Built-in Web Search</h3>
+                    <p>The agent can search the web using DuckDuckGo without any API key to fetch documentation, error
+                        solutions, or library references on the fly.</p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-icon">🖥️</div>
+                    <h3>Monaco Web Editor</h3>
+                    <p>Launch a VS Code-quality Monaco editor in your browser straight from the terminal with
+                        <code>/editor</code>. Edit files visually, then let the agent continue from the same session.
+                    </p>
+                </div>
+
+            </div>
         </div>
+    </section>
 
-        <div class="feature-card reveal">
-          <div class="feature-icon">🧠</div>
-          <h3>Plan-First Approach</h3>
-          <p>Before touching a single file, the agent presents you a detailed step-by-step plan. Review it, edit it, or redirect it — then approve for execution. No surprises.</p>
-        </div>
-
-        <div class="feature-card reveal">
-          <div class="feature-icon">🔒</div>
-          <h3>Smart Permission System</h3>
-          <p>Every high-risk action (modifying files, running shell commands) needs your go-ahead. Choose Allow, Always Allow, Deny, or Deny with a reason that teaches the agent an alternative approach.</p>
-        </div>
-
-        <div class="feature-card reveal">
-          <div class="feature-icon">⛓️</div>
-          <h3>Multi-LLM & Key Rotation</h3>
-          <p>Connect Groq, Google Gemini, OpenAI, Anthropic Claude, or local Ollama. Add multiple API keys per provider — Aashoo auto-rotates them to bypass rate limits seamlessly.</p>
-        </div>
-
-        <div class="feature-card reveal">
-          <div class="feature-icon">🔄</div>
-          <h3>Git-Aware File Tree</h3>
-          <p>See your project's live git-status colored file tree — green for new files, yellow for changes, red for deletions. Refreshes automatically after every agent action.</p>
-        </div>
-
-        <div class="feature-card reveal">
-          <div class="feature-icon">🚀</div>
-          <h3>Background Process Manager</h3>
-          <p>Start Flask, Django, Node.js, or any server in the background without blocking your terminal. Check logs, list processes, and stop them — all within the agent session.</p>
-        </div>
-
-        <div class="feature-card reveal">
-          <div class="feature-icon">💾</div>
-          <h3>Persistent Memory Per Project</h3>
-          <p>Conversation history, your always-allow tool preferences, and agent notes are saved per project in a local SQLite database. Pick up exactly where you left off.</p>
-        </div>
-
-        <div class="feature-card reveal">
-          <div class="feature-icon">🌐</div>
-          <h3>Built-in Web Search</h3>
-          <p>The agent can search the web using DuckDuckGo without any API key to fetch documentation, error solutions, or library references on the fly.</p>
-        </div>
-
-        <div class="feature-card reveal">
-          <div class="feature-icon">🖥️</div>
-          <h3>Monaco Web Editor</h3>
-          <p>Launch a VS Code-quality Monaco editor in your browser straight from the terminal with <code>/editor</code>. Edit files visually, then let the agent continue from the same session.</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════════
        HOW IT WORKS
   ═══════════════════════════════════════════════ -->
-  <section class="section how-section" id="how-it-works">
-    <div class="container">
-      <div class="section-label reveal">WORKFLOW</div>
-      <h2 class="section-title reveal">How AashooAgent Works</h2>
-      <p class="section-subtitle reveal">A transparent, permission-based cycle that keeps you in control at every step.</p>
+    <section class="section how-section" id="how-it-works">
+        <div class="container">
+            <div class="section-label reveal">WORKFLOW</div>
+            <h2 class="section-title reveal">How AashooAgent Works</h2>
+            <p class="section-subtitle reveal">A transparent, permission-based cycle that keeps you in control at every
+                step.</p>
 
-      <div class="workflow-steps">
-        <div class="workflow-step reveal">
-          <div class="step-num">01</div>
-          <div class="step-body">
-            <h3>You Describe the Task</h3>
-            <p>Type your request in natural language. Use multiple lines freely — press <kbd>Enter</kbd> to add lines, <kbd>Ctrl+S</kbd> to send. Paste long prompts without issues.</p>
-          </div>
-        </div>
-        <div class="workflow-arrow">→</div>
-        <div class="workflow-step reveal">
-          <div class="step-num">02</div>
-          <div class="step-body">
-            <h3>Agent Creates a Plan</h3>
-            <p>For complex tasks, the agent generates a detailed markdown plan — files to create, steps to execute. You can approve, edit, or completely redirect it.</p>
-          </div>
-        </div>
-        <div class="workflow-arrow">→</div>
-        <div class="workflow-step reveal">
-          <div class="step-num">03</div>
-          <div class="step-body">
-            <h3>Permission-Gated Execution</h3>
-            <p>The agent executes step by step. For risky actions it asks permission. Low-risk reads run automatically. You are never surprised by unauthorized changes.</p>
-          </div>
-        </div>
-        <div class="workflow-arrow">→</div>
-        <div class="workflow-step reveal">
-          <div class="step-num">04</div>
-          <div class="step-body">
-            <h3>Remembers & Continues</h3>
-            <p>All conversations, your tool preferences, and agent notes are saved per-project. Open the project tomorrow and the agent picks up with full context.</p>
-          </div>
-        </div>
-      </div>
+            <div class="workflow-steps">
+                <div class="workflow-step reveal">
+                    <div class="step-num">01</div>
+                    <div class="step-body">
+                        <h3>You Describe the Task</h3>
+                        <p>Type your request in natural language. Use multiple lines freely — press <kbd>Enter</kbd> to
+                            add lines, <kbd>Ctrl+S</kbd> to send. Paste long prompts without issues.</p>
+                    </div>
+                </div>
+                <div class="workflow-arrow">→</div>
+                <div class="workflow-step reveal">
+                    <div class="step-num">02</div>
+                    <div class="step-body">
+                        <h3>Agent Creates a Plan</h3>
+                        <p>For complex tasks, the agent generates a detailed markdown plan — files to create, steps to
+                            execute. You can approve, edit, or completely redirect it.</p>
+                    </div>
+                </div>
+                <div class="workflow-arrow">→</div>
+                <div class="workflow-step reveal">
+                    <div class="step-num">03</div>
+                    <div class="step-body">
+                        <h3>Permission-Gated Execution</h3>
+                        <p>The agent executes step by step. For risky actions it asks permission. Low-risk reads run
+                            automatically. You are never surprised by unauthorized changes.</p>
+                    </div>
+                </div>
+                <div class="workflow-arrow">→</div>
+                <div class="workflow-step reveal">
+                    <div class="step-num">04</div>
+                    <div class="step-body">
+                        <h3>Remembers & Continues</h3>
+                        <p>All conversations, your tool preferences, and agent notes are saved per-project. Open the
+                            project tomorrow and the agent picks up with full context.</p>
+                    </div>
+                </div>
+            </div>
 
-      <!-- Permission system call-out -->
-      <div class="permission-demo reveal">
-        <div class="perm-header">
-          <span class="perm-icon">⚠️</span>
-          <span class="perm-title">Permission Required</span>
+            <!-- Permission system call-out -->
+            <div class="permission-demo reveal">
+                <div class="perm-header">
+                    <span class="perm-icon">⚠️</span>
+                    <span class="perm-title">Permission Required</span>
+                </div>
+                <div class="perm-body">
+                    <div class="perm-tool">✏️ edit_file — <span class="perm-dim">{ "path": "app.py", "old_code": "...",
+                            "new_code": "..." }</span></div>
+                    <div class="perm-options">
+                        <span class="perm-opt allow">[A] Allow</span>
+                        <span class="perm-opt always">[!] Always Allow</span>
+                        <span class="perm-opt deny">[D] Deny</span>
+                        <span class="perm-opt reason">[R] Deny + Reason</span>
+                        <span class="perm-opt stop">[X] Stop Agent</span>
+                    </div>
+                </div>
+                <p class="perm-note">Choose <strong>[R] Deny + Reason</strong> and the agent will read your reason and
+                    try a different approach automatically.</p>
+            </div>
         </div>
-        <div class="perm-body">
-          <div class="perm-tool">✏️ edit_file — <span class="perm-dim">{ "path": "app.py", "old_code": "...", "new_code": "..." }</span></div>
-          <div class="perm-options">
-            <span class="perm-opt allow">[A] Allow</span>
-            <span class="perm-opt always">[!] Always Allow</span>
-            <span class="perm-opt deny">[D] Deny</span>
-            <span class="perm-opt reason">[R] Deny + Reason</span>
-            <span class="perm-opt stop">[X] Stop Agent</span>
-          </div>
-        </div>
-        <p class="perm-note">Choose <strong>[R] Deny + Reason</strong> and the agent will read your reason and try a different approach automatically.</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ═══════════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════════
        LLM PROVIDERS
   ═══════════════════════════════════════════════ -->
-  <section class="section providers-section">
-    <div class="container">
-      <div class="section-label reveal">SUPPORTED MODELS</div>
-      <h2 class="section-title reveal">Connect Any LLM Provider</h2>
-      <p class="section-subtitle reveal">One agent, five providers. Switch mid-session with <code>/switch</code> — no restart needed.</p>
+    <section class="section providers-section">
+        <div class="container">
+            <div class="section-label reveal">SUPPORTED MODELS</div>
+            <h2 class="section-title reveal">Connect Any LLM Provider</h2>
+            <p class="section-subtitle reveal">One agent, five providers. Switch mid-session with <code>/switch</code> —
+                no restart needed.</p>
 
-      <div class="providers-grid">
-        <div class="provider-card reveal">
-          <div class="provider-logo">⚡</div>
-          <div class="provider-info">
-            <h4>Groq</h4>
-            <p>llama-3.3-70b · mixtral · gemma2</p>
-            <span class="provider-note">Fastest inference, free tier</span>
-          </div>
-        </div>
-        <div class="provider-card reveal">
-          <div class="provider-logo">🔷</div>
-          <div class="provider-info">
-            <h4>Google Gemini</h4>
-            <p>gemini-1.5-pro · gemini-1.5-flash · gemini-2.0</p>
-            <span class="provider-note">1M+ token context window</span>
-          </div>
-        </div>
-        <div class="provider-card reveal">
-          <div class="provider-logo">🤖</div>
-          <div class="provider-info">
-            <h4>OpenAI</h4>
-            <p>gpt-4o · gpt-4o-mini · o1-preview</p>
-            <span class="provider-note">Industry standard GPT models</span>
-          </div>
-        </div>
-        <div class="provider-card reveal">
-          <div class="provider-logo">🌀</div>
-          <div class="provider-info">
-            <h4>Anthropic Claude</h4>
-            <p>claude-3-5-sonnet · haiku · opus</p>
-            <span class="provider-note">Premier coding capabilities</span>
-          </div>
-        </div>
-        <div class="provider-card reveal">
-          <div class="provider-logo">🦙</div>
-          <div class="provider-info">
-            <h4>Ollama (Local)</h4>
-            <p>llama3 · mistral · qwen2.5-coder · phi3</p>
-            <span class="provider-note">100% offline, no API key</span>
-          </div>
-        </div>
-      </div>
+            <div class="providers-grid">
+                <div class="provider-card reveal">
+                    <div class="provider-logo">⚡</div>
+                    <div class="provider-info">
+                        <h4>Groq</h4>
+                        <p>llama-3.3-70b · mixtral · gemma2</p>
+                        <span class="provider-note">Fastest inference, free tier</span>
+                    </div>
+                </div>
+                <div class="provider-card reveal">
+                    <div class="provider-logo">🔷</div>
+                    <div class="provider-info">
+                        <h4>Google Gemini</h4>
+                        <p>gemini-1.5-pro · gemini-1.5-flash · gemini-2.0</p>
+                        <span class="provider-note">1M+ token context window</span>
+                    </div>
+                </div>
+                <div class="provider-card reveal">
+                    <div class="provider-logo">🤖</div>
+                    <div class="provider-info">
+                        <h4>OpenAI</h4>
+                        <p>gpt-4o · gpt-4o-mini · o1-preview</p>
+                        <span class="provider-note">Industry standard GPT models</span>
+                    </div>
+                </div>
+                <div class="provider-card reveal">
+                    <div class="provider-logo">🌀</div>
+                    <div class="provider-info">
+                        <h4>Anthropic Claude</h4>
+                        <p>claude-3-5-sonnet · haiku · opus</p>
+                        <span class="provider-note">Premier coding capabilities</span>
+                    </div>
+                </div>
+                <div class="provider-card reveal">
+                    <div class="provider-logo">🦙</div>
+                    <div class="provider-info">
+                        <h4>Ollama (Local)</h4>
+                        <p>llama3 · mistral · qwen2.5-coder · phi3</p>
+                        <span class="provider-note">100% offline, no API key</span>
+                    </div>
+                </div>
+            </div>
 
-      <div class="rate-limit-note reveal">
-        <div class="rln-icon">💡</div>
-        <div class="rln-text">
-          <strong>Rate Limit Bypass:</strong> Enter multiple API keys (comma-separated) during setup. Aashoo automatically rotates between them so you never hit rate limits.
+            <div class="rate-limit-note reveal">
+                <div class="rln-icon">💡</div>
+                <div class="rln-text">
+                    <strong>Rate Limit Bypass:</strong> Enter multiple API keys (comma-separated) during setup. Aashoo
+                    automatically rotates between them so you never hit rate limits.
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ═══════════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════════
        INSTALLATION
   ═══════════════════════════════════════════════ -->
-  <section class="section install-section" id="install">
-    <div class="container">
-      <div class="section-label reveal">GET STARTED</div>
-      <h2 class="section-title reveal">Installation Guide</h2>
-      <p class="section-subtitle reveal">Choose your platform and follow the steps. You'll be running your first AI coding session in under 5 minutes.</p>
+    <section class="section install-section" id="install">
+        <div class="container">
+            <div class="section-label reveal">GET STARTED</div>
+            <h2 class="section-title reveal">Installation Guide</h2>
+            <p class="section-subtitle reveal">Choose your platform and follow the steps. You'll be running your first
+                AI coding session in under 5 minutes.</p>
 
-      <!-- Platform tabs -->
-      <div class="install-tabs reveal">
-        <button class="itab active" data-tab="termux">📱 Android / Termux</button>
-        <button class="itab" data-tab="linux">🐧 Linux & macOS</button>
-        <button class="itab" data-tab="windows">🪟 Windows</button>
-      </div>
-
-      <!-- Tab content -->
-      <div class="install-content" id="installContent">
-
-        <!-- TERMUX -->
-        <div class="install-panel active" data-panel="termux">
-          <div class="prereq-note">
-            <strong>Prerequisites:</strong> Install Termux from <a href="https://f-droid.org/packages/com.termux/" target="_blank">F-Droid</a> (recommended over Play Store for latest version).
-          </div>
-          <div class="install-steps">
-            <div class="install-step">
-              <div class="istep-num">1</div>
-              <div class="istep-body">
-                <h4>Install Dependencies</h4>
-                <div class="code-block">
-                  <pre id="t1">pkg update -y && pkg install python git ripgrep termux-api -y</pre>
-                  <button class="copy-code" onclick="copyEl('t1',this)">Copy</button>
-                </div>
-              </div>
+            <!-- Platform tabs -->
+            <div class="install-tabs reveal">
+                <button class="itab active" data-tab="termux">📱 Android / Termux</button>
+                <button class="itab" data-tab="linux">🐧 Linux & macOS</button>
+                <button class="itab" data-tab="windows">🪟 Windows</button>
             </div>
-            <div class="install-step">
-              <div class="istep-num">2</div>
-              <div class="istep-body">
-                <h4>Clone the Repository</h4>
-                <div class="code-block">
-                  <pre id="t2">git clone https://github.com/AashooSharma/AashooAiAgentCLI.git
+
+            <!-- Tab content -->
+            <div class="install-content" id="installContent">
+
+                <!-- TERMUX -->
+                <div class="install-panel active" data-panel="termux">
+                    <div class="prereq-note">
+                        <strong>Prerequisites:</strong> Install Termux from <a
+                            href="https://f-droid.org/packages/com.termux/" target="_blank">F-Droid</a> (recommended
+                        over Play Store for latest version).
+                    </div>
+                    <div class="install-steps">
+                        <div class="install-step">
+                            <div class="istep-num">1</div>
+                            <div class="istep-body">
+                                <h4>Install Dependencies</h4>
+                                <div class="code-block">
+                                    <pre id="t1">pkg update -y && pkg install python git ripgrep termux-api -y</pre>
+                                    <button class="copy-code" onclick="copyEl('t1',this)">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="install-step">
+                            <div class="istep-num">2</div>
+                            <div class="istep-body">
+                                <h4>Clone the Repository</h4>
+                                <div class="code-block">
+                                    <pre id="t2">git clone https://github.com/AashooSharma/AashooAiAgentCLI.git
 cd AashooAiAgentCLI</pre>
-                  <button class="copy-code" onclick="copyEl('t2',this)">Copy</button>
-                </div>
-              </div>
-            </div>
-            <div class="install-step">
-              <div class="istep-num">3</div>
-              <div class="istep-body">
-                <h4>Setup Virtual Environment & Install</h4>
-                <div class="code-block">
-                  <pre id="t3">python -m venv venv && source venv/bin/activate
+                                    <button class="copy-code" onclick="copyEl('t2',this)">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="install-step">
+                            <div class="istep-num">3</div>
+                            <div class="istep-body">
+                                <h4>Setup Virtual Environment & Install</h4>
+                                <div class="code-block">
+                                    <pre id="t3">python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt</pre>
-                  <button class="copy-code" onclick="copyEl('t3',this)">Copy</button>
+                                    <button class="copy-code" onclick="copyEl('t3',this)">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="install-step">
+                            <div class="istep-num">4</div>
+                            <div class="istep-body">
+                                <h4>Run Setup Wizard</h4>
+                                <div class="code-block">
+                                    <pre id="t4">python -m aashoo.main --setup</pre>
+                                    <button class="copy-code" onclick="copyEl('t4',this)">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="install-step">
+                            <div class="istep-num">5</div>
+                            <div class="istep-body">
+                                <h4>Start the Agent</h4>
+                                <div class="code-block">
+                                    <pre id="t5">python -m aashoo.main</pre>
+                                    <button class="copy-code" onclick="copyEl('t5',this)">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-            <div class="install-step">
-              <div class="istep-num">4</div>
-              <div class="istep-body">
-                <h4>Run Setup Wizard</h4>
-                <div class="code-block">
-                  <pre id="t4">python -m aashoo.main --setup</pre>
-                  <button class="copy-code" onclick="copyEl('t4',this)">Copy</button>
-                </div>
-              </div>
-            </div>
-            <div class="install-step">
-              <div class="istep-num">5</div>
-              <div class="istep-body">
-                <h4>Start the Agent</h4>
-                <div class="code-block">
-                  <pre id="t5">python -m aashoo.main</pre>
-                  <button class="copy-code" onclick="copyEl('t5',this)">Copy</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <!-- LINUX -->
-        <div class="install-panel" data-panel="linux">
-          <div class="prereq-note">
-            <strong>Prerequisites:</strong> Python 3.9+, git, and optionally <a href="https://github.com/BurntSushi/ripgrep" target="_blank">ripgrep</a> for faster code search.
-          </div>
-          <div class="install-steps">
-            <div class="install-step">
-              <div class="istep-num">1</div>
-              <div class="istep-body">
-                <h4>Clone the Repository</h4>
-                <div class="code-block">
-                  <pre id="l1">git clone https://github.com/AashooSharma/AashooAiAgentCLI.git
+                <!-- LINUX -->
+                <div class="install-panel" data-panel="linux">
+                    <div class="prereq-note">
+                        <strong>Prerequisites:</strong> Python 3.9+, git, and optionally <a
+                            href="https://github.com/BurntSushi/ripgrep" target="_blank">ripgrep</a> for faster code
+                        search.
+                    </div>
+                    <div class="install-steps">
+                        <div class="install-step">
+                            <div class="istep-num">1</div>
+                            <div class="istep-body">
+                                <h4>Clone the Repository</h4>
+                                <div class="code-block">
+                                    <pre id="l1">git clone https://github.com/AashooSharma/AashooAiAgentCLI.git
 cd AashooAiAgentCLI</pre>
-                  <button class="copy-code" onclick="copyEl('l1',this)">Copy</button>
-                </div>
-              </div>
-            </div>
-            <div class="install-step">
-              <div class="istep-num">2</div>
-              <div class="istep-body">
-                <h4>Setup Virtual Environment & Install</h4>
-                <div class="code-block">
-                  <pre id="l2">python3 -m venv venv && source venv/bin/activate
+                                    <button class="copy-code" onclick="copyEl('l1',this)">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="install-step">
+                            <div class="istep-num">2</div>
+                            <div class="istep-body">
+                                <h4>Setup Virtual Environment & Install</h4>
+                                <div class="code-block">
+                                    <pre id="l2">python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt</pre>
-                  <button class="copy-code" onclick="copyEl('l2',this)">Copy</button>
+                                    <button class="copy-code" onclick="copyEl('l2',this)">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="install-step">
+                            <div class="istep-num">3</div>
+                            <div class="istep-body">
+                                <h4>Run Setup Wizard</h4>
+                                <div class="code-block">
+                                    <pre id="l3">python3 -m aashoo.main --setup</pre>
+                                    <button class="copy-code" onclick="copyEl('l3',this)">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="install-step">
+                            <div class="istep-num">4</div>
+                            <div class="istep-body">
+                                <h4>Start the Agent</h4>
+                                <div class="code-block">
+                                    <pre id="l4">python3 -m aashoo.main</pre>
+                                    <button class="copy-code" onclick="copyEl('l4',this)">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-            <div class="install-step">
-              <div class="istep-num">3</div>
-              <div class="istep-body">
-                <h4>Run Setup Wizard</h4>
-                <div class="code-block">
-                  <pre id="l3">python3 -m aashoo.main --setup</pre>
-                  <button class="copy-code" onclick="copyEl('l3',this)">Copy</button>
-                </div>
-              </div>
-            </div>
-            <div class="install-step">
-              <div class="istep-num">4</div>
-              <div class="istep-body">
-                <h4>Start the Agent</h4>
-                <div class="code-block">
-                  <pre id="l4">python3 -m aashoo.main</pre>
-                  <button class="copy-code" onclick="copyEl('l4',this)">Copy</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <!-- WINDOWS -->
-        <div class="install-panel" data-panel="windows">
-          <div class="prereq-note">
-            <strong>Prerequisites:</strong> Python 3.9+ from <a href="https://python.org" target="_blank">python.org</a>, git from <a href="https://git-scm.com" target="_blank">git-scm.com</a>. Run PowerShell as usual.
-          </div>
-          <div class="install-steps">
-            <div class="install-step">
-              <div class="istep-num">1</div>
-              <div class="istep-body">
-                <h4>Clone the Repository</h4>
-                <div class="code-block">
-                  <pre id="w1">git clone https://github.com/AashooSharma/AashooAiAgentCLI.git
+                <!-- WINDOWS -->
+                <div class="install-panel" data-panel="windows">
+                    <div class="prereq-note">
+                        <strong>Prerequisites:</strong> Python 3.9+ from <a href="https://python.org"
+                            target="_blank">python.org</a>, git from <a href="https://git-scm.com"
+                            target="_blank">git-scm.com</a>. Run PowerShell as usual.
+                    </div>
+                    <div class="install-steps">
+                        <div class="install-step">
+                            <div class="istep-num">1</div>
+                            <div class="istep-body">
+                                <h4>Clone the Repository</h4>
+                                <div class="code-block">
+                                    <pre id="w1">git clone https://github.com/AashooSharma/AashooAiAgentCLI.git
 cd AashooAiAgentCLI</pre>
-                  <button class="copy-code" onclick="copyEl('w1',this)">Copy</button>
-                </div>
-              </div>
-            </div>
-            <div class="install-step">
-              <div class="istep-num">2</div>
-              <div class="istep-body">
-                <h4>Setup Virtual Environment & Install</h4>
-                <div class="code-block">
-                  <pre id="w2">python -m venv venv
+                                    <button class="copy-code" onclick="copyEl('w1',this)">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="install-step">
+                            <div class="istep-num">2</div>
+                            <div class="istep-body">
+                                <h4>Setup Virtual Environment & Install</h4>
+                                <div class="code-block">
+                                    <pre id="w2">python -m venv venv
 venv\Scripts\Activate.ps1
 pip install -r requirements.txt</pre>
-                  <button class="copy-code" onclick="copyEl('w2',this)">Copy</button>
+                                    <button class="copy-code" onclick="copyEl('w2',this)">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="install-step">
+                            <div class="istep-num">3</div>
+                            <div class="istep-body">
+                                <h4>Run Setup Wizard</h4>
+                                <div class="code-block">
+                                    <pre id="w3">python -m aashoo.main --setup</pre>
+                                    <button class="copy-code" onclick="copyEl('w3',this)">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="install-step">
+                            <div class="istep-num">4</div>
+                            <div class="istep-body">
+                                <h4>Start the Agent</h4>
+                                <div class="code-block">
+                                    <pre id="w4">python -m aashoo.main</pre>
+                                    <button class="copy-code" onclick="copyEl('w4',this)">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-            <div class="install-step">
-              <div class="istep-num">3</div>
-              <div class="istep-body">
-                <h4>Run Setup Wizard</h4>
-                <div class="code-block">
-                  <pre id="w3">python -m aashoo.main --setup</pre>
-                  <button class="copy-code" onclick="copyEl('w3',this)">Copy</button>
-                </div>
-              </div>
-            </div>
-            <div class="install-step">
-              <div class="istep-num">4</div>
-              <div class="istep-body">
-                <h4>Start the Agent</h4>
-                <div class="code-block">
-                  <pre id="w4">python -m aashoo.main</pre>
-                  <button class="copy-code" onclick="copyEl('w4',this)">Copy</button>
-                </div>
-              </div>
-            </div>
-          </div>
+
+            </div><!-- /install-content -->
         </div>
+    </section>
 
-      </div><!-- /install-content -->
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════════
        COMMANDS / DOCUMENTATION
   ═══════════════════════════════════════════════ -->
-  <section class="section commands-section" id="commands">
-    <div class="container">
-      <div class="section-label reveal">DOCUMENTATION</div>
-      <h2 class="section-title reveal">Slash Commands Reference</h2>
-      <p class="section-subtitle reveal">Once inside a session, these commands give you full control without leaving the terminal.</p>
+    <section class="section commands-section" id="commands">
+        <div class="container">
+            <div class="section-label reveal">DOCUMENTATION</div>
+            <h2 class="section-title reveal">Slash Commands Reference</h2>
+            <p class="section-subtitle reveal">Once inside a session, these commands give you full control without
+                leaving the terminal.</p>
 
-      <div class="commands-grid">
-        <div class="cmd-card reveal">
-          <code class="cmd-name">/help</code>
-          <p class="cmd-desc">Show all available commands.</p>
-        </div>
-        <div class="cmd-card reveal">
-          <code class="cmd-name">/switch</code>
-          <p class="cmd-desc">Dynamically switch LLM provider, model, or API key — mid-session.</p>
-        </div>
-        <div class="cmd-card reveal">
-          <code class="cmd-name">/editor</code>
-          <p class="cmd-desc">Launch a Monaco-based Web Editor in your browser for visual editing.</p>
-        </div>
-        <div class="cmd-card reveal">
-          <code class="cmd-name">/history</code>
-          <p class="cmd-desc">View the last 20 messages from the current project's conversation.</p>
-        </div>
-        <div class="cmd-card reveal">
-          <code class="cmd-name">/undo</code>
-          <p class="cmd-desc">Revert the last file change made by the agent instantly.</p>
-        </div>
-        <div class="cmd-card reveal">
-          <code class="cmd-name">/tree</code>
-          <p class="cmd-desc">Refresh and reprint the git-status colored live file tree.</p>
-        </div>
-        <div class="cmd-card reveal">
-          <code class="cmd-name">/bg</code>
-          <p class="cmd-desc">List all currently running background processes (servers, jobs).</p>
-        </div>
-        <div class="cmd-card reveal">
-          <code class="cmd-name">/bg-stop N</code>
-          <p class="cmd-desc">Stop background process by its ID. E.g. <code>/bg-stop 1</code>.</p>
-        </div>
-        <div class="cmd-card reveal">
-          <code class="cmd-name">/clear</code>
-          <p class="cmd-desc">Clear the terminal screen while keeping your session active.</p>
-        </div>
-        <div class="cmd-card reveal">
-          <code class="cmd-name">/exit</code>
-          <p class="cmd-desc">Exit the current project session and return to the main menu.</p>
-        </div>
-      </div>
+            <div class="commands-grid">
+                <div class="cmd-card reveal">
+                    <code class="cmd-name">/help</code>
+                    <p class="cmd-desc">Show all available commands.</p>
+                </div>
+                <div class="cmd-card reveal">
+                    <code class="cmd-name">/switch</code>
+                    <p class="cmd-desc">Dynamically switch LLM provider, model, or API key — mid-session.</p>
+                </div>
+                <div class="cmd-card reveal">
+                    <code class="cmd-name">/editor</code>
+                    <p class="cmd-desc">Launch a Monaco-based Web Editor in your browser for visual editing.</p>
+                </div>
+                <div class="cmd-card reveal">
+                    <code class="cmd-name">/history</code>
+                    <p class="cmd-desc">View the last 20 messages from the current project's conversation.</p>
+                </div>
+                <div class="cmd-card reveal">
+                    <code class="cmd-name">/undo</code>
+                    <p class="cmd-desc">Revert the last file change made by the agent instantly.</p>
+                </div>
+                <div class="cmd-card reveal">
+                    <code class="cmd-name">/tree</code>
+                    <p class="cmd-desc">Refresh and reprint the git-status colored live file tree.</p>
+                </div>
+                <div class="cmd-card reveal">
+                    <code class="cmd-name">/bg</code>
+                    <p class="cmd-desc">List all currently running background processes (servers, jobs).</p>
+                </div>
+                <div class="cmd-card reveal">
+                    <code class="cmd-name">/bg-stop N</code>
+                    <p class="cmd-desc">Stop background process by its ID. E.g. <code>/bg-stop 1</code>.</p>
+                </div>
+                <div class="cmd-card reveal">
+                    <code class="cmd-name">/clear</code>
+                    <p class="cmd-desc">Clear the terminal screen while keeping your session active.</p>
+                </div>
+                <div class="cmd-card reveal">
+                    <code class="cmd-name">/exit</code>
+                    <p class="cmd-desc">Exit the current project session and return to the main menu.</p>
+                </div>
+            </div>
 
-      <!-- Input tip -->
-      <div class="input-tip reveal">
-        <div class="tip-icon">⌨️</div>
-        <div class="tip-body">
-          <h4>Multi-line Input Support</h4>
-          <p>Press <kbd>Enter</kbd> to add a new line while typing your prompt. When you're done, press <kbd>Ctrl + S</kbd> to send. Paste large multi-line prompts directly — they won't submit until you press Ctrl+S.</p>
+            <!-- Input tip -->
+            <div class="input-tip reveal">
+                <div class="tip-icon">⌨️</div>
+                <div class="tip-body">
+                    <h4>Multi-line Input Support</h4>
+                    <p>Press <kbd>Enter</kbd> to add a new line while typing your prompt. When you're done, press
+                        <kbd>Ctrl + S</kbd> to send. Paste large multi-line prompts directly — they won't submit until
+                        you press Ctrl+S.</p>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ═══════════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════════
        COMPARISON TABLE
   ═══════════════════════════════════════════════ -->
-  <section class="section comparison-section" id="comparison">
-    <div class="container">
-      <div class="section-label reveal">COMPARISON</div>
-      <h2 class="section-title reveal">How We Stack Up</h2>
-      <p class="section-subtitle reveal">An honest comparison of AashooAiAgentCLI against other popular AI coding agents.</p>
+    <section class="section comparison-section" id="comparison">
+        <div class="container">
+            <div class="section-label reveal">COMPARISON</div>
+            <h2 class="section-title reveal">How We Stack Up</h2>
+            <p class="section-subtitle reveal">An honest comparison of AashooAiAgentCLI against other popular AI coding
+                agents.</p>
 
-      <div class="table-wrap reveal">
-        <table class="comp-table">
-          <thead>
-            <tr>
-              <th class="feat-col">Feature</th>
-              <th class="ours-col">AashooAgent</th>
-              <th>Claude Code</th>
-              <th>Antigravity</th>
-              <th>Aider</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="feat-name">📱 Android / Termux Support</td>
-              <td class="ours-col yes"><span class="badge-yes">✓ Yes — Only One</span></td>
-              <td class="no">✗ No</td>
-              <td class="no">✗ No</td>
-              <td class="partial">⚡ Limited</td>
-            </tr>
-            <tr>
-              <td class="feat-name">💰 Free & Open Source</td>
-              <td class="ours-col yes">✓ MIT License</td>
-              <td class="no">✗ Requires billing</td>
-              <td class="yes">✓ Yes</td>
-              <td class="yes">✓ MIT</td>
-            </tr>
-            <tr>
-              <td class="feat-name">🔌 Local / Offline via Ollama</td>
-              <td class="ours-col yes">✓ Yes</td>
-              <td class="no">✗ No</td>
-              <td class="yes">✓ Yes</td>
-              <td class="yes">✓ Yes</td>
-            </tr>
-            <tr>
-              <td class="feat-name">⛓️ Multi-Key Rate Limit Bypass</td>
-              <td class="ours-col yes">✓ Built-in</td>
-              <td class="no">✗ No</td>
-              <td class="no">✗ No</td>
-              <td class="no">✗ No</td>
-            </tr>
-            <tr>
-              <td class="feat-name">🧠 Plan-First with Approval UI</td>
-              <td class="ours-col yes">✓ Yes</td>
-              <td class="yes">✓ Yes</td>
-              <td class="yes">✓ Yes</td>
-              <td class="no">✗ No</td>
-            </tr>
-            <tr>
-              <td class="feat-name">🔒 Deny + Reason Permission</td>
-              <td class="ours-col yes">✓ Yes</td>
-              <td class="partial">⚡ Basic</td>
-              <td class="yes">✓ Yes</td>
-              <td class="no">✗ No</td>
-            </tr>
-            <tr>
-              <td class="feat-name">🚀 Background Process Manager</td>
-              <td class="ours-col yes">✓ Yes</td>
-              <td class="no">✗ No</td>
-              <td class="no">✗ No</td>
-              <td class="no">✗ No</td>
-            </tr>
-            <tr>
-              <td class="feat-name">🖥️ Built-in Monaco Web Editor</td>
-              <td class="ours-col yes">✓ Yes</td>
-              <td class="no">✗ No</td>
-              <td class="no">✗ No</td>
-              <td class="no">✗ No</td>
-            </tr>
-            <tr>
-              <td class="feat-name">💾 Persistent Memory per Project</td>
-              <td class="ours-col yes">✓ SQLite</td>
-              <td class="yes">✓ Yes</td>
-              <td class="yes">✓ Yes</td>
-              <td class="no">✗ No</td>
-            </tr>
-            <tr>
-              <td class="feat-name">🔄 Dynamic Provider Switch</td>
-              <td class="ours-col yes">✓ /switch command</td>
-              <td class="no">✗ No</td>
-              <td class="no">✗ No</td>
-              <td class="partial">⚡ Restart needed</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
+            <div class="table-wrap reveal">
+                <table class="comp-table">
+                    <thead>
+                        <tr>
+                            <th class="feat-col">Feature</th>
+                            <th class="ours-col">AashooAgent</th>
+                            <th>Claude Code</th>
+                            <th>Antigravity</th>
+                            <th>Aider</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="feat-name">📱 Android / Termux Support</td>
+                            <td class="ours-col yes"><span class="badge-yes">✓ Yes — Only One</span></td>
+                            <td class="no">✗ No</td>
+                            <td class="no">✗ No</td>
+                            <td class="partial">⚡ Limited</td>
+                        </tr>
+                        <tr>
+                            <td class="feat-name">💰 Free & Open Source</td>
+                            <td class="ours-col yes">✓ MIT License</td>
+                            <td class="no">✗ Requires billing</td>
+                            <td class="yes">✓ Yes</td>
+                            <td class="yes">✓ MIT</td>
+                        </tr>
+                        <tr>
+                            <td class="feat-name">🔌 Local / Offline via Ollama</td>
+                            <td class="ours-col yes">✓ Yes</td>
+                            <td class="no">✗ No</td>
+                            <td class="yes">✓ Yes</td>
+                            <td class="yes">✓ Yes</td>
+                        </tr>
+                        <tr>
+                            <td class="feat-name">⛓️ Multi-Key Rate Limit Bypass</td>
+                            <td class="ours-col yes">✓ Built-in</td>
+                            <td class="no">✗ No</td>
+                            <td class="no">✗ No</td>
+                            <td class="no">✗ No</td>
+                        </tr>
+                        <tr>
+                            <td class="feat-name">🧠 Plan-First with Approval UI</td>
+                            <td class="ours-col yes">✓ Yes</td>
+                            <td class="yes">✓ Yes</td>
+                            <td class="yes">✓ Yes</td>
+                            <td class="no">✗ No</td>
+                        </tr>
+                        <tr>
+                            <td class="feat-name">🔒 Deny + Reason Permission</td>
+                            <td class="ours-col yes">✓ Yes</td>
+                            <td class="partial">⚡ Basic</td>
+                            <td class="yes">✓ Yes</td>
+                            <td class="no">✗ No</td>
+                        </tr>
+                        <tr>
+                            <td class="feat-name">🚀 Background Process Manager</td>
+                            <td class="ours-col yes">✓ Yes</td>
+                            <td class="no">✗ No</td>
+                            <td class="no">✗ No</td>
+                            <td class="no">✗ No</td>
+                        </tr>
+                        <tr>
+                            <td class="feat-name">🖥️ Built-in Monaco Web Editor</td>
+                            <td class="ours-col yes">✓ Yes</td>
+                            <td class="no">✗ No</td>
+                            <td class="no">✗ No</td>
+                            <td class="no">✗ No</td>
+                        </tr>
+                        <tr>
+                            <td class="feat-name">💾 Persistent Memory per Project</td>
+                            <td class="ours-col yes">✓ SQLite</td>
+                            <td class="yes">✓ Yes</td>
+                            <td class="yes">✓ Yes</td>
+                            <td class="no">✗ No</td>
+                        </tr>
+                        <tr>
+                            <td class="feat-name">🔄 Dynamic Provider Switch</td>
+                            <td class="ours-col yes">✓ /switch command</td>
+                            <td class="no">✗ No</td>
+                            <td class="no">✗ No</td>
+                            <td class="partial">⚡ Restart needed</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 
-  <!-- ═══════════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════════
        OPEN SOURCE CTA
   ═══════════════════════════════════════════════ -->
-  <section class="cta-section">
-    <div class="container">
-      <div class="cta-box reveal">
-        <div class="cta-icon">⭐</div>
-        <h2>Open Source & Community Driven</h2>
-        <p>AashooAiAgentCLI is MIT licensed. Read the code, fork it, contribute features, report bugs, or star the repo to show support. Every contribution matters.</p>
-        <div class="cta-actions">
-          <a href="https://github.com/AashooSharma/AashooAiAgentCLI" target="_blank" rel="noopener" class="btn-primary">
-            <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-            View on GitHub
-          </a>
-          <a href="https://github.com/AashooSharma/AashooAiAgentCLI/issues" target="_blank" rel="noopener" class="btn-outline-light">Report an Issue</a>
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-box reveal">
+                <div class="cta-icon">⭐</div>
+                <h2>Open Source & Community Driven</h2>
+                <p>AashooAiAgentCLI is MIT licensed. Read the code, fork it, contribute features, report bugs, or star
+                    the repo to show support. Every contribution matters.</p>
+                <div class="cta-actions">
+                    <a href="https://github.com/AashooSharma/AashooAiAgentCLI" target="_blank" rel="noopener"
+                        class="btn-primary">
+                        <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
+                            <path
+                                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+                        </svg>
+                        View on GitHub
+                    </a>
+                    <a href="https://github.com/AashooSharma/AashooAiAgentCLI/issues" target="_blank" rel="noopener"
+                        class="btn-outline-light">Report an Issue</a>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ═══════════════════════════════════════════════
+    <!-- ═══════════════════════════════════════════════
        FOOTER
   ═══════════════════════════════════════════════ -->
-  <footer class="site-footer">
-    <div class="container footer-inner">
+    <footer class="site-footer">
+        <div class="container footer-inner">
 
-      <div class="footer-brand-col">
-        <div class="footer-brand">
-          <span class="brand-icon">⚡</span>
-          <span class="brand-name">AashooAiAgent<span class="brand-accent">CLI</span></span>
+            <div class="footer-brand-col">
+                <div class="footer-brand">
+                    <span class="brand-icon">⚡</span>
+                    <span class="brand-name">AashooAiAgent<span class="brand-accent">CLI</span></span>
+                </div>
+                <p class="footer-tagline">Free, open-source AI coding agent.<br />Code anywhere — terminal first.</p>
+                <div class="social-links">
+                    <a href="https://github.com/AashooSharma" target="_blank" rel="noopener" class="social-link"
+                        title="GitHub @AashooSharma">
+                        <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+                            <path
+                                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+                        </svg>
+                    </a>
+                    <a href="https://linkedin.com/in/AashooSharma" target="_blank" rel="noopener" class="social-link"
+                        title="LinkedIn @AashooSharma">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                        </svg>
+                    </a>
+                    <a href="https://instagram.com/AashooSharma" target="_blank" rel="noopener" class="social-link"
+                        title="Instagram @AashooSharma">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-links-col">
+                <h5>Project</h5>
+                <a href="https://github.com/AashooSharma/AashooAiAgentCLI" target="_blank">GitHub Repository</a>
+                <a href="https://github.com/AashooSharma/AashooAiAgentCLI/blob/main/README.md"
+                    target="_blank">Documentation</a>
+                <a href="https://github.com/AashooSharma/AashooAiAgentCLI/blob/main/LICENSE" target="_blank">MIT
+                    License</a>
+                <a href="https://github.com/AashooSharma/AashooAiAgentCLI/issues" target="_blank">Report a Bug</a>
+            </div>
+
+            <div class="footer-links-col">
+                <h5>Quick Links</h5>
+                <a href="#features">Features</a>
+                <a href="#install">Installation</a>
+                <a href="#commands">Commands</a>
+                <a href="#comparison">Comparison</a>
+            </div>
+
+            <div class="footer-links-col">
+                <h5>Creator</h5>
+                <p class="creator-info">Built by <strong>Abhishek Sharma</strong><br />BTech CSE Student, Jaipur</p>
+                <a href="https://github.com/AashooSharma" target="_blank">@AashooSharma</a>
+            </div>
+
         </div>
-        <p class="footer-tagline">Free, open-source AI coding agent.<br/>Code anywhere — terminal first.</p>
-        <div class="social-links">
-          <a href="https://github.com/AashooSharma" target="_blank" rel="noopener" class="social-link" title="GitHub @AashooSharma">
-            <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-          </a>
-          <a href="https://linkedin.com/in/AashooSharma" target="_blank" rel="noopener" class="social-link" title="LinkedIn @AashooSharma">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-          </a>
-          <a href="https://instagram.com/AashooSharma" target="_blank" rel="noopener" class="social-link" title="Instagram @AashooSharma">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-          </a>
+
+        <div class="footer-bottom">
+            <div class="container footer-bottom-inner">
+                <p>© 2026 AashooAiAgentCLI · MIT License · Made with ❤️ in Jaipur, India</p>
+                <p>Built by <a href="https://github.com/AashooSharma" target="_blank">@AashooSharma</a></p>
+            </div>
         </div>
-      </div>
+    </footer>
 
-      <div class="footer-links-col">
-        <h5>Project</h5>
-        <a href="https://github.com/AashooSharma/AashooAiAgentCLI" target="_blank">GitHub Repository</a>
-        <a href="https://github.com/AashooSharma/AashooAiAgentCLI/blob/main/README.md" target="_blank">Documentation</a>
-        <a href="https://github.com/AashooSharma/AashooAiAgentCLI/blob/main/LICENSE" target="_blank">MIT License</a>
-        <a href="https://github.com/AashooSharma/AashooAiAgentCLI/issues" target="_blank">Report a Bug</a>
-      </div>
-
-      <div class="footer-links-col">
-        <h5>Quick Links</h5>
-        <a href="#features">Features</a>
-        <a href="#install">Installation</a>
-        <a href="#commands">Commands</a>
-        <a href="#comparison">Comparison</a>
-      </div>
-
-      <div class="footer-links-col">
-        <h5>Creator</h5>
-        <p class="creator-info">Built by <strong>Abhishek Sharma</strong><br/>BTech CSE Student, Jaipur</p>
-        <a href="https://github.com/AashooSharma" target="_blank">@AashooSharma</a>
-      </div>
-
-    </div>
-
-    <div class="footer-bottom">
-      <div class="container footer-bottom-inner">
-        <p>© 2026 AashooAiAgentCLI · MIT License · Made with ❤️ in Jaipur, India</p>
-        <p>Built by <a href="https://github.com/AashooSharma" target="_blank">@AashooSharma</a></p>
-      </div>
-    </div>
-  </footer>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>
