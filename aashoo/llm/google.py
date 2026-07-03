@@ -12,7 +12,7 @@ class GoogleLLM(BaseLLM):
         # Google's OpenAI-compatible endpoint base URL
         self.client = OpenAI(
             api_key=api_key,
-            base_url="https://generativelanguage.googleapis.com/v1beta/"
+            base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
         )
         self._model = model
 

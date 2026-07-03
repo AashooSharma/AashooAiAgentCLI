@@ -81,6 +81,9 @@ def print_logo():
 
 def main_menu(config: dict) -> str:
     """Main menu show karo aur choice return karo."""
+    from rich.prompt import Prompt
+    prov = config.get('llm_provider', 'groq')
+    active_model = config.get(f"{prov}_model") or config.get('model', 'N/A')
     console.print(Panel.fit(
         "[bold white]Kya karna hai?[/bold white]\n\n"
         "  [cyan bold]1[/cyan bold]  New Project\n"
@@ -89,12 +92,9 @@ def main_menu(config: dict) -> str:
         "  [cyan bold]4[/cyan bold]  Settings\n"
         "  [cyan bold]5[/cyan bold]  Exit\n",
         border_style="cyan",
-        title=f"[dim]{config['llm_provider'].upper()} | "
-              f"{config.get('model', 'llama-3.3-70b-versatile')}[/dim]",
+        title=f"[dim]{prov.upper()} | {active_model}[/dim]",
         title_align="right"
     ))
-
-    from rich.prompt import Prompt
     try:
         choice = Prompt.ask(
             "[bold]Choice[/bold]",
@@ -107,22 +107,148 @@ def main_menu(config: dict) -> str:
     return choice
 
 
-def settings_menu(config: dict):
-    """Settings dikhao aur re-run wizard option do."""
-    from rich.prompt import Confirm
-    console.print()
-    console.print(Panel(
-        f"[bold]Current Config[/bold]\n\n"
-        f"Provider  : [cyan]{config['llm_provider']}[/cyan]\n"
-        f"Model     : [cyan]{config.get('model', 'llama-3.3-70b-versatile')}[/cyan]\n"
-        f"Projects  : [cyan]{config['projects_dir']}[/cyan]\n"
-        f"Auto-allow: [cyan]{config.get('auto_allow_low_risk', True)}[/cyan]\n\n"
-        "[dim]Config file: ~/.aashoo/config.json[/dim]",
-        border_style="dim"
-    ))
+def get_ollama_models() -> list:
+    """Run `ollama list` aur available models return karo."""
+    import subprocess
+    from aashoo.setup_wizard import PROVIDER_MODELS
+    fallback = PROVIDER_MODELS.get("ollama", ["llama3"])
+    try:
+        result = subprocess.run(
+            ["ollama", "list"],
+            capture_output=True, text=True, timeout=5
+        )
+        lines = result.stdout.strip().splitlines()
+        models = []
+        for line in lines[1:]:  # skip header
+            parts = line.split()
+            if parts:
+                models.append(parts[0])  # e.g. "gemma3:4b"
+        return models if models else fallback
+    except Exception:
+        return fallback
 
-    if Confirm.ask("\nSetup wizard dobara run karein?", default=False):
-        run_wizard()
+
+def settings_menu(config: dict):
+    """Settings sub-menu — config safely update karo bina wizard re-run ke."""
+    from rich.prompt import Prompt, Confirm
+    from aashoo.setup_wizard import PROVIDER_MODELS, save_config
+
+    while True:
+        console.print()
+        console.print(Panel(
+            f"[bold]Current Config[/bold]\n\n"
+            f"Provider  : [cyan]{config['llm_provider']}[/cyan]\n"
+            f"Model     : [cyan]{config.get(f"{config['llm_provider']}_model") or config.get('model', 'N/A')}[/cyan]\n"
+            f"Projects  : [cyan]{config['projects_dir']}[/cyan]\n"
+            f"Auto-allow: [cyan]{config.get('auto_allow_low_risk', True)}[/cyan]\n\n"
+            "[dim]Config file: ~/.aashoo/config.json[/dim]",
+            border_style="dim"
+        ))
+
+        console.print(
+            "  [cyan bold]1[/cyan bold]  API Key add karo (kisi bhi provider ke liye)\n"
+            "  [cyan bold]2[/cyan bold]  Active model switch karo\n"
+            "  [cyan bold]3[/cyan bold]  Auto-allow preference toggle karo\n"
+            "  [cyan bold]4[/cyan bold]  Pura Setup Wizard dobara run karo (config overwrite hogi!)\n"
+            "  [cyan bold]5[/cyan bold]  Back\n"
+        )
+
+        try:
+            s_choice = Prompt.ask("[bold]Choice[/bold]", choices=["1","2","3","4","5"], default="5")
+        except (KeyboardInterrupt, EOFError):
+            break
+
+        if s_choice == "1":
+            # ── Add API Key (any provider) ──
+            providers = ["groq", "google", "openai", "anthropic"]
+            console.print("\nKis provider ki key add karni hai?")
+            for i, p in enumerate(providers, 1):
+                console.print(f"  [cyan]{i}[/cyan] — {p.upper()}")
+            try:
+                p_choice = Prompt.ask("Provider", choices=[str(i) for i in range(1, len(providers)+1)])
+            except (KeyboardInterrupt, EOFError):
+                continue
+            chosen_prov = providers[int(p_choice) - 1]
+
+            try:
+                new_key = Prompt.ask(
+                    f"Enter {chosen_prov.capitalize()} API Key(s) [dim](comma se alag karo multiple ke liye)[/dim]",
+                    password=True
+                ).strip()
+            except (KeyboardInterrupt, EOFError):
+                continue
+
+            if new_key:
+                new_keys = [k.strip() for k in new_key.split(",") if k.strip()]
+                arr_key = f"{chosen_prov}_api_keys"
+                if arr_key not in config:
+                    config[arr_key] = []
+                config[arr_key].extend(new_keys)
+                # duplicate remove
+                config[arr_key] = list(dict.fromkeys(config[arr_key]))
+                save_config(config)
+                console.print(f"[green]✓ {len(new_keys)} key(s) {chosen_prov.upper()} ke liye add ho gayi.[/green]")
+            else:
+                console.print("[dim]Cancelled.[/dim]")
+
+        elif s_choice == "2":
+            # ── Switch active model ──
+            prov = config["llm_provider"]
+            if prov == "ollama":
+                models_list = get_ollama_models()
+                console.print("[dim]Ollama se live models fetch ho rahi hain...[/dim]")
+            else:
+                models_list = PROVIDER_MODELS.get(prov, [])
+
+            if not models_list:
+                console.print("[red]Koi model nahi mili.[/red]")
+                continue
+
+            console.print(f"\nAvailable models for [cyan]{prov.upper()}[/cyan]:")
+            for i, m in enumerate(models_list, 1):
+                prov_model = config.get(f"{prov}_model") or config.get("model")
+                active_marker = " [green]* (active)[/green]" if m == prov_model else ""
+                console.print(f"  [cyan]{i}[/cyan] — {m}{active_marker}")
+
+            console.print(f"  [cyan]{len(models_list)+1}[/cyan] — Custom model naam likhein")
+
+            try:
+                m_choice = Prompt.ask(
+                    "Choose",
+                    choices=[str(i) for i in range(1, len(models_list)+2)]
+                )
+            except (KeyboardInterrupt, EOFError):
+                continue
+
+            if int(m_choice) == len(models_list) + 1:
+                try:
+                    custom_model = Prompt.ask("Custom model naam").strip()
+                except (KeyboardInterrupt, EOFError):
+                    continue
+                if custom_model:
+                    config[f"{prov}_model"] = custom_model
+            else:
+                config[f"{prov}_model"] = models_list[int(m_choice) - 1]
+
+            save_config(config)
+            console.print(f"[green]✓ Model switched to [bold]{config[f'{prov}_model']}[/bold].[/green]")
+
+        elif s_choice == "3":
+            # ── Toggle auto-allow ──
+            current = config.get("auto_allow_low_risk", True)
+            config["auto_allow_low_risk"] = not current
+            save_config(config)
+            state = "ON" if config["auto_allow_low_risk"] else "OFF"
+            console.print(f"[green]✓ Auto-allow {state} ho gaya.[/green]")
+
+        elif s_choice == "4":
+            # ── Full wizard (overwrites) ──
+            if Confirm.ask("[red]Puri config overwrite ho jaayegi. Sure hain?[/red]", default=False):
+                run_wizard()
+            break
+
+        elif s_choice == "5":
+            break
 
 
 # def start_agent_session(project: dict, config: dict):
@@ -349,12 +475,16 @@ def start_agent_session(project: dict, config: dict):
                             
                 config["llm_provider"] = new_prov
                 from aashoo.setup_wizard import PROVIDER_MODELS
-                config["model"] = PROVIDER_MODELS[new_prov][0]
+                # Per-provider model restore karo agar already saved hai
+                config["llm_provider"] = new_prov
+                if not config.get(f"{new_prov}_model"):
+                    config[f"{new_prov}_model"] = PROVIDER_MODELS[new_prov][0]
                 
                 from aashoo.setup_wizard import save_config
                 save_config(config)
                 llm = get_llm_client(config)
-                console.print(f"[green]✓ Switched provider to [bold]{new_prov.upper()}[/bold] using model [bold]{config['model']}[/bold].[/green]")
+                active_model = config.get(f"{new_prov}_model")
+                console.print(f"[green]✓ Switched to [bold]{new_prov.upper()}[/bold] using model [bold]{active_model}[/bold].[/green]")
                 
             elif switch_choice == "2":
                 prov = config["llm_provider"]
@@ -384,38 +514,78 @@ def start_agent_session(project: dict, config: dict):
             elif switch_choice == "3":
                 prov = config["llm_provider"]
                 from aashoo.setup_wizard import PROVIDER_MODELS
-                models_list = PROVIDER_MODELS.get(prov, ["llama-3.3-70b-versatile"])
-                
+                if prov == "ollama":
+                    console.print("[dim]Ollama se live models fetch ho rahi hain...[/dim]")
+                    models_list = get_ollama_models()
+                else:
+                    models_list = PROVIDER_MODELS.get(prov, ["llama-3.3-70b-versatile"])
+
                 console.print(f"\nAvailable models for {prov.upper()}:")
                 for i, m in enumerate(models_list, 1):
-                    active_marker = " [green]*[/green]" if m == config.get("model") else ""
+                    prov_model = config.get(f"{prov}_model") or config.get("model")
+                    active_marker = " [green]* (active)[/green]" if m == prov_model else ""
                     console.print(f"  [cyan]{i}[/cyan] — {m}{active_marker}")
-                    
-                m_choice = Prompt.ask("Choose model", choices=[str(i) for i in range(1, len(models_list)+1)])
-                config["model"] = models_list[int(m_choice)-1]
-                
+                console.print(f"  [cyan]{len(models_list)+1}[/cyan] — Custom model naam likhein")
+
+                try:
+                    m_choice = Prompt.ask(
+                        "Choose model",
+                        choices=[str(i) for i in range(1, len(models_list)+2)]
+                    )
+                except (KeyboardInterrupt, EOFError):
+                    continue
+
+                if int(m_choice) == len(models_list) + 1:
+                    try:
+                        custom_model = Prompt.ask("Custom model naam").strip()
+                    except (KeyboardInterrupt, EOFError):
+                        continue
+                    if custom_model:
+                        config[f"{prov}_model"] = custom_model
+                else:
+                    config[f"{prov}_model"] = models_list[int(m_choice) - 1]
+
                 from aashoo.setup_wizard import save_config
                 save_config(config)
                 llm = get_llm_client(config)
-                console.print(f"[green]✓ Switched model to [bold]{config['model']}[/bold].[/green]")
+                console.print(f"[green]✓ Switched model to [bold]{config[f'{prov}_model']}[/bold].[/green]")
                 
             elif switch_choice == "4":
-                prov = config["llm_provider"]
-                if prov == "ollama":
-                    console.print("[yellow]Ollama local hai, API key addition disabled.[/yellow]")
+                # ── Add API Key — provider choose karo pehle ──
+                api_providers = ["groq", "google", "openai", "anthropic"]
+                console.print("\nKis provider ki key add karni hai?")
+                for i, p in enumerate(api_providers, 1):
+                    console.print(f"  [cyan]{i}[/cyan] — {p.upper()}")
+                try:
+                    ap_choice = Prompt.ask(
+                        "Provider choose karo",
+                        choices=[str(i) for i in range(1, len(api_providers)+1)]
+                    )
+                except (KeyboardInterrupt, EOFError):
                     continue
-                    
-                new_key = Prompt.ask(f"Enter new {prov.capitalize()} API Key", password=True).strip()
+                chosen_prov = api_providers[int(ap_choice) - 1]
+
+                try:
+                    new_key = Prompt.ask(
+                        f"Enter {chosen_prov.capitalize()} API Key(s) [dim](comma se alag karo)[/dim]",
+                        password=True
+                    ).strip()
+                except (KeyboardInterrupt, EOFError):
+                    continue
+
                 if new_key:
-                    if f"{prov}_api_keys" not in config:
-                        config[f"{prov}_api_keys"] = []
-                    config[f"{prov}_api_keys"].append(new_key)
-                    config[f"active_{prov}_key_idx"] = len(config[f"{prov}_api_keys"]) - 1
-                    
+                    new_keys = [k.strip() for k in new_key.split(",") if k.strip()]
+                    arr_key = f"{chosen_prov}_api_keys"
+                    if arr_key not in config:
+                        config[arr_key] = []
+                    config[arr_key].extend(new_keys)
+                    config[arr_key] = list(dict.fromkeys(config[arr_key]))  # dedupe
+                    config[f"active_{chosen_prov}_key_idx"] = 0
+
                     from aashoo.setup_wizard import save_config
                     save_config(config)
                     llm = get_llm_client(config)
-                    console.print(f"[green]✓ New API key added and selected as active.[/green]")
+                    console.print(f"[green]✓ {len(new_keys)} key(s) {chosen_prov.upper()} ke liye add aur save ho gayi.[/green]")
 
         else:
             # Agent ko bhejo

@@ -26,7 +26,12 @@ DEFAULT_CONFIG = {
     "active_google_key_idx": 0,
     "active_openai_key_idx": 0,
     "active_anthropic_key_idx": 0,
-    "model": "llama-3.3-70b-versatile",
+    # Per-provider model selection (saved independently per provider)
+    "groq_model": "llama-3.3-70b-versatile",
+    "google_model": "gemini-2.5-flash",
+    "openai_model": "gpt-4o",
+    "anthropic_model": "claude-3-5-sonnet-latest",
+    "ollama_model": "llama3",
     "projects_dir": str(Path.home() / "aashoo-projects"),
     "theme": "dark",
     "auto_allow_low_risk": True,
@@ -42,11 +47,12 @@ PROVIDER_MODELS = {
         "llama3-70b-8192",
     ],
     "google": [
+        "gemini-2.5-flash",
+        "gemini-2.5-pro",
+        "gemini-2.0-flash",
+        "gemini-3.5-flash",
         "gemini-1.5-pro",
         "gemini-1.5-flash",
-        "gemini-2.0-flash-exp",
-        "gemini-1.0-pro",
-        "gemma-2-27b-it",
     ],
     "openai": [
         "gpt-4o",
@@ -63,6 +69,7 @@ PROVIDER_MODELS = {
         "claude-3-haiku-20240307",
     ],
     "ollama": [
+        "gemma3:4b",
         "llama3",
         "mistral",
         "qwen2.5-coder",
@@ -78,14 +85,24 @@ def load_config() -> dict:
         try:
             with open(CONFIG_FILE, "r") as f:
                 data = json.load(f)
-                
+
                 # Dynamic migration: old singular api_key keys list mein convert karo
                 for prov in ["groq", "google", "openai", "anthropic"]:
                     old_key = f"{prov}_api_key"
                     array_key = f"{prov}_api_keys"
                     if old_key in data and data[old_key] and not data.get(array_key):
                         data[array_key] = [data[old_key]]
-                
+
+                # Migration: old single 'model' field ko per-provider fields mein convert karo
+                if "model" in data:
+                    old_model = data["model"]
+                    old_provider = data.get("llm_provider", "groq")
+                    prov_key = f"{old_provider}_model"
+                    if prov_key not in data:
+                        data[prov_key] = old_model
+                    # old 'model' field hata do (optional, kept for backward compat)
+                    data.pop("model", None)
+
                 # Naye keys merge karo jo purani config mein nahi hain
                 for k, v in DEFAULT_CONFIG.items():
                     if k not in data:
@@ -202,8 +219,9 @@ def run_wizard():
         choices=[str(i) for i in range(1, len(models_list) + 1)],
         default="1"
     )
-    config["model"] = models_list[int(model_choice) - 1]
-    console.print(f"[green]✓ Selected Model: {config['model']}[/green]")
+    selected_model = models_list[int(model_choice) - 1]
+    config[f"{provider}_model"] = selected_model
+    console.print(f"[green]✓ Selected Model: {selected_model}[/green]")
 
     console.print()
 
