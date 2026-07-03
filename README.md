@@ -203,3 +203,18 @@ Contributions are highly welcome! Please feel free to open issues or submit pull
 
 ## 📜 License
 This project is licensed under the **MIT License**. See [LICENSE](LICENSE) for details.
+
+
+## 💖 Support This Project
+
+Agar yeh tool helpful laga toh support karo!
+
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/aashoo8290b)
+
+### 🇮🇳 Indian Supporters — UPI / Paytm / PhonePe / BHIM
+
+<img src="docs/paytm-qr.png" width="200"/>
+
+**UPI ID:** `8290305619@ptyes`
+
+*Kisi bhi UPI app se scan karo — Paytm, PhonePe, GPay, BHIM*
