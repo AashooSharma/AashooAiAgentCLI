@@ -1,168 +1,288 @@
-// Platform-specific installation commands database
-const platformCommands = {
-    termux: {
-        step1: `pkg update -y && pkg install python git ripgrep termux-api -y\npython -m venv venv && source venv/bin/activate`,
-        step2: `pip install aashoo-agent\npython -m aashoo.main --setup`,
-        step3: `python -m aashoo.main`
-    },
-    unix: {
-        step1: `# Install requirements (Debian/Ubuntu example)\nsudo apt update && sudo apt install -y python3 python3-venv git ripgrep\npython3 -m venv venv && source venv/bin/activate`,
-        step2: `pip install aashoo-agent\npython3 -m aashoo.main --setup`,
-        step3: `python3 -m aashoo.main`
-    },
-    windows: {
-        step1: `# Ensure Python 3.9+ is installed\npython -m venv venv\nvenv\\Scripts\\Activate.ps1`,
-        step2: `pip install aashoo-agent\npython -m aashoo.main --setup`,
-        step3: `python -m aashoo.main`
-    }
+// 1. Terminal Simulation Database for Auto-typing Loop
+const terminalData = {
+  termux: {
+    title: "termux — AashooAiAgentCLI",
+    prompt: "$ ",
+    steps: [
+      { type: "input", text: "pkg update -y && pkg install python git ripgrep termux-api -y" },
+      { type: "input", text: "git clone https://github.com/AashooSharma/AashooAiAgentCLI.git" },
+      { type: "input", text: "cd AashooAiAgentCLI && python -m venv venv && source venv/bin/activate" },
+      { type: "input", text: "pip install -r requirements.txt && python -m aashoo.main --setup" },
+      { type: "input", text: "python -m aashoo.main" },
+      { type: "output", text: "✓ Setup complete! Starting session..." },
+      { type: "info", text: "You (Enter=newline, Ctrl+S=submit):" },
+      { type: "prompt", text: "Build me a REST API for a todo app with Flask" }
+    ]
+  },
+  linux: {
+    title: "bash — AashooAiAgentCLI",
+    prompt: "$ ",
+    steps: [
+      { type: "input", text: "git clone https://github.com/AashooSharma/AashooAiAgentCLI.git" },
+      { type: "input", text: "cd AashooAiAgentCLI && python3 -m venv venv && source venv/bin/activate" },
+      { type: "input", text: "pip install -r requirements.txt && python3 -m aashoo.main --setup" },
+      { type: "input", text: "python3 -m aashoo.main" },
+      { type: "output", text: "✓ Setup complete! Starting session..." },
+      { type: "info", text: "You (Enter=newline, Ctrl+S=submit):" },
+      { type: "prompt", text: "Build me a REST API for a todo app with Flask" }
+    ]
+  },
+  macos: {
+    title: "zsh — AashooAiAgentCLI",
+    prompt: "$ ",
+    steps: [
+      { type: "input", text: "git clone https://github.com/AashooSharma/AashooAiAgentCLI.git" },
+      { type: "input", text: "cd AashooAiAgentCLI && python3 -m venv venv && source venv/bin/activate" },
+      { type: "input", text: "pip install -r requirements.txt && python3 -m aashoo.main --setup" },
+      { type: "input", text: "python3 -m aashoo.main" },
+      { type: "output", text: "✓ Setup complete! Starting session..." },
+      { type: "info", text: "You (Enter=newline, Ctrl+S=submit):" },
+      { type: "prompt", text: "Build me a REST API for a todo app with Flask" }
+    ]
+  },
+  windows: {
+    title: "PowerShell — AashooAiAgentCLI",
+    prompt: "PS C:\\> ",
+    steps: [
+      { type: "input", text: "git clone https://github.com/AashooSharma/AashooAiAgentCLI.git" },
+      { type: "input", text: "cd AashooAiAgentCLI; python -m venv venv; venv\\Scripts\\Activate.ps1" },
+      { type: "input", text: "pip install -r requirements.txt; python -m aashoo.main --setup" },
+      { type: "input", text: "python -m aashoo.main" },
+      { type: "output", text: "✓ Setup complete! Starting session..." },
+      { type: "info", text: "You (Enter=newline, Ctrl+S=submit):" },
+      { type: "prompt", text: "Build me a REST API for a todo app with Flask" }
+    ]
+  }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Mobile Menu Drawer Functionality
-    const menuToggle = document.getElementById('menuToggle');
-    const mobileDrawer = document.getElementById('mobileDrawer');
-    
-    if (menuToggle && mobileDrawer) {
-        menuToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            mobileDrawer.classList.toggle('open');
-            menuToggle.classList.toggle('active');
-            
-            // Toggle hamburger icon animation
-            const spans = menuToggle.querySelectorAll('span');
-            if (mobileDrawer.classList.contains('open')) {
-                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'rotate(-45deg) translate(6px, -6px)';
-            } else {
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
-            }
-        });
 
-        // Close drawer when clicking a link
-        const drawerLinks = mobileDrawer.querySelectorAll('.drawer-link');
-        drawerLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileDrawer.classList.remove('open');
-                menuToggle.classList.remove('active');
-                const spans = menuToggle.querySelectorAll('span');
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
-            });
-        });
-
-        // Close drawer on clicking outside
-        document.addEventListener('click', (e) => {
-            if (!mobileDrawer.contains(e.target) && !menuToggle.contains(e.target)) {
-                mobileDrawer.classList.remove('open');
-                menuToggle.classList.remove('active');
-                const spans = menuToggle.querySelectorAll('span');
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
-            }
-        });
+  // Header Background Transition on Scroll
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
     }
+  });
 
-    // 2. Clipboard copy for Hero Pip command
-    const copyBtn = document.getElementById('copyBtn');
-    const pipCommand = document.getElementById('pipCommand');
+  // Mobile Nav Hamburger Controls
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobileNav');
 
-    if (copyBtn && pipCommand) {
-        copyBtn.addEventListener('click', () => {
-            const commandText = pipCommand.textContent;
-            navigator.clipboard.writeText(commandText).then(() => {
-                const textNormal = copyBtn.querySelector('.copy-icon-txt');
-                const textSuccess = copyBtn.querySelector('.success-icon-txt');
-                
-                textNormal.style.display = 'none';
-                textSuccess.style.display = 'inline';
-                copyBtn.style.borderColor = 'var(--success-color)';
-                copyBtn.style.color = 'var(--success-color)';
+  if (hamburger && mobileNav) {
+    hamburger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      mobileNav.classList.toggle('open');
+      hamburger.classList.toggle('active');
 
-                setTimeout(() => {
-                    textNormal.style.display = 'inline';
-                    textSuccess.style.display = 'none';
-                    copyBtn.style.borderColor = '';
-                    copyBtn.style.color = '';
-                }, 2000);
-            }).catch(err => {
-                console.error('Failed to copy text: ', err);
-            });
-        });
-    }
-
-    // 3. Dynamic Platform Tab Switcher
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    const step1Code = document.getElementById('codeStep1');
-    const step2Code = document.getElementById('codeStep2');
-    const step3Code = document.getElementById('codeStep3');
-
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Remove active status from all tabs and assign to clicked one
-            tabBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            const platform = btn.getAttribute('data-platform');
-            const commands = platformCommands[platform];
-
-            if (commands) {
-                // Fade out command content, switch text, then fade back in
-                const codeBlocks = [step1Code, step2Code, step3Code];
-                codeBlocks.forEach((block, index) => {
-                    block.parentElement.style.opacity = 0.3;
-                    setTimeout(() => {
-                        if (index === 0) block.textContent = commands.step1;
-                        if (index === 1) block.textContent = commands.step2;
-                        if (index === 2) block.textContent = commands.step3;
-                        block.parentElement.style.opacity = 1;
-                    }, 150);
-                });
-            }
-        });
+      const spans = hamburger.querySelectorAll('span');
+      if (mobileNav.classList.contains('open')) {
+        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+        spans[1].style.opacity = '0';
+        spans[2].style.transform = 'rotate(-45deg) translate(6px, -6px)';
+      } else {
+        spans[0].style.transform = 'none';
+        spans[1].style.opacity = '1';
+        spans[2].style.transform = 'none';
+      }
     });
 
-    // 4. Reveal Scroll Animations using IntersectionObserver
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
+    const mLinks = mobileNav.querySelectorAll('.mobile-nav-link');
+    mLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileNav.classList.remove('open');
+        hamburger.classList.remove('active');
+        const spans = hamburger.querySelectorAll('span');
+        spans[0].style.transform = 'none';
+        spans[1].style.opacity = '1';
+        spans[2].style.transform = 'none';
+      });
+    });
 
-    const revealObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target); // Trigger only once
+    document.addEventListener('click', (e) => {
+      if (!mobileNav.contains(e.target) && !hamburger.contains(e.target)) {
+        mobileNav.classList.remove('open');
+        hamburger.classList.remove('active');
+        const spans = hamburger.querySelectorAll('span');
+        spans[0].style.transform = 'none';
+        spans[1].style.opacity = '1';
+        spans[2].style.transform = 'none';
+      }
+    });
+  }
+
+  // Installation Tabs Pane Switcher
+  const tabButtons = document.querySelectorAll('.itab');
+  const panels = document.querySelectorAll('.install-panel');
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabButtons.forEach(b => b.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      const platform = btn.getAttribute('data-tab');
+      const activePanel = document.querySelector(`.install-panel[data-panel="${platform}"]`);
+      
+      if (activePanel) {
+        activePanel.classList.add('active');
+      }
+    });
+  });
+
+  // Reveal Animations on Scroll (Intersection Observer)
+  const revealElements = document.querySelectorAll('.reveal');
+  const revealOptions = {
+    root: null,
+    threshold: 0.05,
+    rootMargin: '0px'
+  };
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, revealOptions);
+
+  revealElements.forEach(el => observer.observe(el));
+
+  // ═══════════════════════════════════════════════
+  // TYPEWRITER SIMULATION CORE ENGINE
+  // ═══════════════════════════════════════════════
+  let currentOS = "termux";
+  const osKeys = ["termux", "linux", "macos", "windows"];
+  let currentOSIndex = 0;
+  let animationTimeout = null;
+  let isTyping = false;
+
+  function typeWriter(osKey) {
+    const terminalBody = document.getElementById("terminalBody");
+    const terminalTitle = document.getElementById("terminalTitle");
+    if (!terminalBody || !terminalTitle) return;
+
+    // Reset timeouts
+    if (animationTimeout) {
+      clearTimeout(animationTimeout);
+    }
+
+    // Highlight active pill
+    const pills = document.querySelectorAll("#heroPills .pill");
+    pills.forEach(p => {
+      if (p.getAttribute("data-os") === osKey) {
+        p.classList.add("pill-highlight");
+      } else {
+        p.classList.remove("pill-highlight");
+      }
+    });
+
+    const osData = terminalData[osKey];
+    terminalTitle.textContent = osData.title;
+    terminalBody.innerHTML = "";
+
+    let stepIdx = 0;
+
+    function runStep() {
+      if (stepIdx >= osData.steps.length) {
+        // Switch to the next OS pill automatically in 6 seconds
+        animationTimeout = setTimeout(() => {
+          currentOSIndex = (currentOSIndex + 1) % osKeys.length;
+          currentOS = osKeys[currentOSIndex];
+          typeWriter(currentOS);
+        }, 6000);
+        return;
+      }
+
+      const step = osData.steps[stepIdx];
+      stepIdx++;
+
+      // Automatically scroll to bottom of simulated terminal
+      terminalBody.scrollTop = terminalBody.scrollHeight;
+
+      if (step.type === "input" || step.type === "prompt") {
+        const lineEl = document.createElement("p");
+        if (step.type === "input") {
+          lineEl.innerHTML = `<span class="t-dim">${osData.prompt}</span><span class="cmd-text"></span>`;
+        } else {
+          lineEl.innerHTML = `<span class="t-cyan">You</span> (Enter=newline, Ctrl+S=submit):<br/><span class="t-prompt"><span class="cmd-text"></span><span class="cursor">▌</span></span>`;
+        }
+        terminalBody.appendChild(lineEl);
+
+        const cmdTextEl = lineEl.querySelector(".cmd-text");
+        let charIdx = 0;
+
+        function typeChar() {
+          if (charIdx < step.text.length) {
+            cmdTextEl.textContent += step.text.charAt(charIdx);
+            charIdx++;
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+            animationTimeout = setTimeout(typeChar, 18); // Typing Speed
+          } else {
+            if (step.type === "prompt") {
+              const cursor = lineEl.querySelector(".cursor");
+              if (cursor) cursor.style.display = 'none';
             }
-        });
-    }, observerOptions);
+            animationTimeout = setTimeout(runStep, 700); // Wait before next step
+          }
+        }
+        typeChar();
+      } else if (step.type === "output") {
+        const lineEl = document.createElement("p");
+        lineEl.className = "t-output";
+        lineEl.textContent = step.text;
+        terminalBody.appendChild(lineEl);
+        terminalBody.scrollTop = terminalBody.scrollHeight;
+        animationTimeout = setTimeout(runStep, 700);
+      } else if (step.type === "info") {
+        const lineEl = document.createElement("p");
+        lineEl.className = "t-blink";
+        lineEl.innerHTML = `<span class="t-cyan">You</span> (Enter=newline, Ctrl+S=submit):`;
+        terminalBody.appendChild(lineEl);
+        terminalBody.scrollTop = terminalBody.scrollHeight;
+        animationTimeout = setTimeout(runStep, 700);
+      }
+    }
 
-    const fadeElements = document.querySelectorAll('.fade-in');
-    fadeElements.forEach(el => revealObserver.observe(el));
+    runStep();
+  }
+
+  // Bind OS Pills Click triggers
+  const pills = document.querySelectorAll("#heroPills .pill");
+  pills.forEach((p, idx) => {
+    p.addEventListener("click", () => {
+      currentOSIndex = idx;
+      currentOS = p.getAttribute("data-os");
+      typeWriter(currentOS);
+    });
+  });
+
+  // Start simulated terminal loop
+  typeWriter("termux");
 });
 
-// Helper function to copy command step blocks
-function copyCode(elementId, btnElement) {
-    const codeElement = document.getElementById(elementId);
-    if (!codeElement) return;
+// Global Clipboard Copy Helper
+function copyEl(elementId, buttonEl) {
+  const codeNode = document.getElementById(elementId);
+  if (!codeNode) return;
 
-    navigator.clipboard.writeText(codeElement.textContent).then(() => {
-        const originalText = btnElement.textContent;
-        btnElement.textContent = 'Copied!';
-        btnElement.style.color = 'var(--success-color)';
-        btnElement.style.borderColor = 'var(--success-color)';
+  const codeText = codeNode.textContent.trim();
+  
+  navigator.clipboard.writeText(codeText).then(() => {
+    const originalText = buttonEl.textContent;
+    buttonEl.textContent = 'Copied!';
+    buttonEl.style.borderColor = 'var(--success)';
+    buttonEl.style.color = 'var(--success)';
 
-        setTimeout(() => {
-            btnElement.textContent = originalText;
-            btnElement.style.color = '';
-            btnElement.style.borderColor = '';
-        }, 2000);
-    }).catch(err => {
-        console.error('Failed to copy: ', err);
-    });
+    setTimeout(() => {
+      buttonEl.textContent = originalText;
+      buttonEl.style.borderColor = '';
+      buttonEl.style.color = '';
+    }, 2000);
+  }).catch(err => {
+    console.error('Failed to copy: ', err);
+  });
 }
