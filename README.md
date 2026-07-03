@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/AashooSharma/AashooAiAgentCLI/blob/main/LICENSE"><img src="https://img.shields.io/github/license/AashooSharma/AashooAiAgentCLI?style=for-the-badge&color=blue" alt="License" /></a>
+  <a href="https://github.com/AashooSharma/AashooAiAgentCLI/blob/main/LICENSE"><img src="https://img.shields.io/github/license/AashooSharma/AashooAiAgentCLI?color=blue&style=for-the-badge" alt="License" /></a>
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/python-3.9%2B-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python" /></a>
   <img src="https://img.shields.io/badge/Platform-Termux%20%7C%20Linux%20%7C%20macOS%20%7C%20Windows-brightgreen?style=for-the-badge" alt="Platforms" />
 </p>
